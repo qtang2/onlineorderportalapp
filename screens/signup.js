@@ -26,16 +26,35 @@ class Signup extends Component {
     loading: false,
   };
 
+  signupSuccess = () => {
+    Alert.alert("Welcome ", this.state.email);
+  };
+
   signupPressHandler = () => {
     console.log("sign up button clicked");
+    if (!(this.state.password === this.state.confirmPassword)) {
+      Alert.alert("OOPS!", "Please enter same password", [
+        { text: "Understood", onPress: () => console.log("alert close") },
+      ]);
+    } else {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(
+          this.state.email.trim(),
+          this.state.password
+        )
+        .then(this.signupSuccess)
+        .catch((err) => {
+          this.setState({ error: err.message });
+          Alert.alert("OOPS!", err.message, [
+            { text: "Understood", onPress: () => console.log("alert close") },
+          ]);
+        });
+    }
     // console.log(this.state.email);
   };
 
   backToLogin = () => {};
-
-  //   loginSuccess = () => {
-  //     this.setState({ error: "", loading: false });
-  //   };
 
   render() {
     return (
@@ -51,7 +70,7 @@ class Signup extends Component {
             style={globalStyles.logoImage}
           />
           <Text style={globalStyles.title}>Online Order Portal</Text>
-          <TextInput
+          {/* <TextInput
             style={globalStyles.input}
             placeholder="Firstname"
             value={this.state.firstname}
@@ -62,7 +81,7 @@ class Signup extends Component {
             placeholder="Lastname"
             value={this.state.lastname}
             onChangeText={(lastname) => this.setState({ lastname })}
-          />
+          /> */}
           <TextInput
             style={globalStyles.input}
             placeholder="email"
@@ -114,6 +133,9 @@ const styles = StyleSheet.create({
   socialIconsContainer: {
     flexDirection: "row",
     alignSelf: "center",
+  },
+  container: {
+    backgroundColor: "green",
   },
 });
 

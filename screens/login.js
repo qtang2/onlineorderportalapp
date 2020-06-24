@@ -90,7 +90,10 @@ class Login extends Component {
 
 const styles = StyleSheet.create({
   signupText: {
-    textAlign: "right",
+    textAlign: "center",
+  },
+  container: {
+    backgroundColor: "pink",
   },
 });
 

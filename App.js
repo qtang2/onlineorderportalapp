@@ -5,7 +5,14 @@ import Login from "./screens/login";
 import Signup from "./screens/signup";
 import MyOrders from "./screens/myOrders";
 import firebase from "firebase";
-import HomeNavigator from "./routes/homeStack";
+import StartNavigator from "./routes/startStack";
+import RootStack from "./routes/rootStack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import MyOrdersStack from "./routes/myOrdersStack";
+import ManageOrders from "./screens/manageOrders";
+
+const Stack = createStackNavigator();
 
 class App extends Component {
   state = {
@@ -24,8 +31,6 @@ class App extends Component {
       appId: "1:658149255251:web:37940844cdc5403e173ea6",
       measurementId: "G-KGQ1F2F3WE",
     };
-    // Initialize Firebase
-    // firebase.initializeApp(firebaseConfig);
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     } else {
@@ -45,15 +50,14 @@ class App extends Component {
     switch (this.state.loggedIn) {
       case false:
         console.log("false case login");
-        // return <Login />;
-        return <Signup />;
+        return <Login />;
+      // return <Signup />;
+      // return <StartNavigator />;
+      // return <RootStack />;
+
       case true:
         console.log("true case Navigator");
         return <MyOrders />;
-
-      // return <HomeNavigator />;
-      // default:
-      //   return <MyOrders />;
     }
   };
 

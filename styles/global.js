@@ -6,6 +6,7 @@ export const globalStyles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
+    width: "100%",
   },
   input: {
     borderWidth: 1,
