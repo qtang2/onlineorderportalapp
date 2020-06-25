@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import LoginButton from "../shared/button";
 import { globalStyles } from "../styles/global";
-import firebase from "firebase";
+import firebase from "../database/firebase";
 
 class Login extends Component {
   state = {
@@ -23,29 +23,50 @@ class Login extends Component {
   };
 
   loginPressHandler = () => {
-    // var emailString = this.state.email.toString();
-    // var pwString = this.state.password.toString();
     console.log("button clicked");
+    if (this.state.email === "" || this.state.password === "") {
+      Alert.alert("OOPS!", "Please enter your details", [
+        { text: "Understood", onPress: () => console.log("alert close") },
+      ]);
+    } else {
+      this.setState({ loading: true });
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(
+          this.state.email.trim(),
+          this.state.password
+        )
+        .then(this.loginSuccess)
+        .catch((err) => {
+          this.setState({ error: err.message });
+          Alert.alert("OOPS!", err.message, [
+            { text: "Understood", onPress: () => console.log("alert close") },
+          ]);
+        });
+      // this.props.navigation.navigate("MyOrders");
+      this.props.navigation.navigate("DrawerNavigator");
+    }
     // console.log(this.state.email);
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.email.trim(), this.state.password)
-      .then(this.loginSuccess)
-      .catch((err) => {
-        this.setState({ error: err.message });
-        Alert.alert("OOPS!", err.message, [
-          { text: "Understood", onPress: () => console.log("alert close") },
-        ]);
-      });
+    // firebase
+    //   .auth()
+    //   .signInWithEmailAndPassword(this.state.email.trim(), this.state.password)
+    //   .then(this.loginSuccess)
+    //   .catch((err) => {
+    //     this.setState({ error: err.message });
+    //     Alert.alert("OOPS!", err.message, [
+    //       { text: "Understood", onPress: () => console.log("alert close") },
+    //     ]);
+    //   });
   };
 
-  loginSuccess = () => {
-    this.setState({ error: "", loading: false });
+  loginSuccess = (res) => {
+    console.log("login Success res param " + res);
+    this.setState({ email: "", password: "", error: "", loading: false });
   };
 
   //TODO: signup function
   signupPressHandler = () => {
-    // console.log("Text Preeeeeeeeeesss");
+    this.props.navigation.navigate("Signup");
   };
 
   render() {

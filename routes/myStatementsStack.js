@@ -1,20 +1,23 @@
 import React, { Component } from "react";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
-import MyOrders from "../screens/myOrders";
 import Header from "../shared/header";
+import MyStatements from "../screens/myStatements";
 
 const Stack = createStackNavigator();
 
-class MyOrdersStack extends Component {
+class MyStatementsStack extends Component {
   render() {
     return (
       <Stack.Navigator>
         <Stack.Screen
           name="MyOrders"
-          component={MyOrders}
+          component={MyStatements}
           options={{
             headerTitle: () => (
-              <Header navigation={this.props.navigation} title="My OOOOO" />
+              <Header
+                navigation={this.props.navigation}
+                title="My Statements"
+              />
             ),
           }}
         />
@@ -23,4 +26,4 @@ class MyOrdersStack extends Component {
   }
 }
 
-export default MyOrdersStack;
+export default MyStatementsStack;

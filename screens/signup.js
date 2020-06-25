@@ -17,8 +17,6 @@ import { SocialIcon } from "react-native-elements";
 
 class Signup extends Component {
   state = {
-    firstname: "",
-    lastname: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -26,8 +24,17 @@ class Signup extends Component {
     loading: false,
   };
 
-  signupSuccess = () => {
+  signupSuccess = (res) => {
     Alert.alert("Welcome ", this.state.email);
+    res.user.updateProfile({ displayName: this.state.email });
+    console.log("signup sueccesfully");
+    this.setState({
+      loa: false,
+      email: "",
+      password: "",
+      confirmPassword: "",
+      error: "",
+    });
   };
 
   signupPressHandler = () => {
@@ -37,6 +44,7 @@ class Signup extends Component {
         { text: "Understood", onPress: () => console.log("alert close") },
       ]);
     } else {
+      this.setState({ loading: true });
       firebase
         .auth()
         .createUserWithEmailAndPassword(
@@ -51,10 +59,14 @@ class Signup extends Component {
           ]);
         });
     }
-    // console.log(this.state.email);
+    // this.props.navigation.navigate("MyOrders");
+    this.props.navigation.navigate("DrawerNavigator");
+    console.log(this.state.email);
   };
 
-  backToLogin = () => {};
+  loginPressHandler = () => {
+    this.props.navigation.navigate("Login");
+  };
 
   render() {
     return (
@@ -105,7 +117,7 @@ class Signup extends Component {
             }
           />
           <LoginButton text="sign up" onPress={this.signupPressHandler} />
-          <TouchableOpacity onPress={this.backToLogin}>
+          <TouchableOpacity onPress={this.loginPressHandler}>
             <Text style={globalStyles.text}>
               Already registered? Click here to login
             </Text>
