@@ -73,7 +73,6 @@ class Signup extends Component {
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
-          console.log("dismisss");
         }}
       >
         <View style={globalStyles.container}>
@@ -82,18 +81,7 @@ class Signup extends Component {
             style={globalStyles.logoImage}
           />
           <Text style={globalStyles.title}>Online Order Portal</Text>
-          {/* <TextInput
-            style={globalStyles.input}
-            placeholder="Firstname"
-            value={this.state.firstname}
-            onChangeText={(firstname) => this.setState({ firstname })}
-          />
-          <TextInput
-            style={globalStyles.input}
-            placeholder="Lastname"
-            value={this.state.lastname}
-            onChangeText={(lastname) => this.setState({ lastname })}
-          /> */}
+
           <TextInput
             style={globalStyles.input}
             placeholder="email"
@@ -122,7 +110,7 @@ class Signup extends Component {
               Already registered? Click here to login
             </Text>
           </TouchableOpacity>
-          <View style={styles.line}></View>
+          <View style={globalStyles.line}></View>
           <Text style={globalStyles.text}>Or sign up using</Text>
           <View style={styles.socialIconsContainer}>
             <SocialIcon type="facebook" />
@@ -136,12 +124,6 @@ class Signup extends Component {
 }
 
 const styles = StyleSheet.create({
-  line: {
-    borderBottomColor: "gray",
-    borderBottomWidth: 1,
-    marginBottom: 12,
-    marginTop: 12,
-  },
   socialIconsContainer: {
     flexDirection: "row",
     alignSelf: "center",

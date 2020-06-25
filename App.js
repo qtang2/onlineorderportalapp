@@ -7,7 +7,6 @@ const Stack = createStackNavigator();
 
 class App extends Component {
   render() {
-    // console.log("appppp " + this.props.navigation);
     return <AuthStack />;
   }
 }

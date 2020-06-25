@@ -43,20 +43,8 @@ class Login extends Component {
             { text: "Understood", onPress: () => console.log("alert close") },
           ]);
         });
-      // this.props.navigation.navigate("MyOrders");
       this.props.navigation.navigate("DrawerNavigator");
     }
-    // console.log(this.state.email);
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword(this.state.email.trim(), this.state.password)
-    //   .then(this.loginSuccess)
-    //   .catch((err) => {
-    //     this.setState({ error: err.message });
-    //     Alert.alert("OOPS!", err.message, [
-    //       { text: "Understood", onPress: () => console.log("alert close") },
-    //     ]);
-    //   });
   };
 
   loginSuccess = (res) => {

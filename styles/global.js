@@ -38,4 +38,10 @@ export const globalStyles = StyleSheet.create({
     height: 150,
     alignSelf: "center",
   },
+  line: {
+    borderBottomColor: "gray",
+    borderBottomWidth: 1,
+    marginBottom: 12,
+    marginTop: 12,
+  },
 });

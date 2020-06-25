@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, Button } from "react-native";
+import { View, Text, TouchableOpacity, Button } from "react-native";
 import firebase from "../database/firebase";
 import { globalStyles } from "../styles/global";
+import ShopsPicker from "../shared/shopsPicker";
 
 class MyOrders extends Component {
   state = { currentUser: null };
@@ -13,6 +14,8 @@ class MyOrders extends Component {
     const { currentUser } = this.state;
     return (
       <View style={globalStyles.container}>
+        <ShopsPicker />
+        <View style={globalStyles.line}></View>
         <Text>My Orders</Text>
         <Text>Hi, {currentUser && currentUser.email}</Text>
         <Button title="confirm" />
