@@ -14,7 +14,7 @@ class MyOrdersStack extends Component {
           component={MyOrders}
           options={{
             headerTitle: () => (
-              <Header navigation={this.props.navigation} title="My OOOOO" />
+              <Header navigation={this.props.navigation} title="My Orders" />
             ),
           }}
         />

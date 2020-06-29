@@ -17,6 +17,15 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 8,
   },
+  qtyinput: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 2,
+    backgroundColor: "pink",
+    height: 20,
+    width: 50,
+    alignSelf: "center",
+  },
   errorText: {
     fontSize: 18,
     color: "#ECF0F1",
@@ -36,6 +45,11 @@ export const globalStyles = StyleSheet.create({
   logoImage: {
     width: 150,
     height: 150,
+    alignSelf: "center",
+  },
+  tableImage: {
+    width: 30,
+    height: 30,
     alignSelf: "center",
   },
   line: {

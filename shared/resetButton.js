@@ -1,32 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-function LoginButton({ text, onPress }) {
+export default function ResetButton({ text, onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.button}>
+      <View style={styles.cfmButton}>
         <Text style={styles.buttonText}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
 }
 
-export default LoginButton;
-
 const styles = StyleSheet.create({
-  button: {
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: "#26B99A",
-    marginTop: 10,
-    marginBottom: 10,
-  },
   buttonText: {
     color: "#F1FFEF",
     fontWeight: "bold",
     textTransform: "uppercase",
     fontSize: 16,
     textAlign: "center",
+  },
+  cfmButton: {
+    borderRadius: 3,
+    backgroundColor: "#1A82C3",
+    marginRight: 10,
+    width: 80,
+    height: 30,
   },
 });

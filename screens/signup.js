@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   View,
@@ -85,7 +85,7 @@ class Signup extends Component {
           <TextInput
             style={globalStyles.input}
             placeholder="email"
-            value={this.state.emal}
+            value={this.state.email}
             onChangeText={(email) => this.setState({ email })}
           />
           <TextInput

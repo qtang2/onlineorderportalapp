@@ -22,7 +22,7 @@ export default ShopsPicker;
 const styles = StyleSheet.create({
   picker: {
     width: "100%",
-    paddingBottom: 10,
+    marginBottom: -15,
   },
   itemStyle: {
     textAlign: "center",

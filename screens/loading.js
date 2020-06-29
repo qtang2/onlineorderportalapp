@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import firebase from "../database/firebase";
-import DrawerNavigator from "../routes/drawer";
 
 class Loading extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
-      console.log(user);
+      // console.log(user);
       if (user) {
         this.props.navigation.navigate("DrawerNavigator");
       } else {

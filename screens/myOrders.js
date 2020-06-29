@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Button } from "react-native";
+import { View, Text, TouchableOpacity, Button, StyleSheet } from "react-native";
 import firebase from "../database/firebase";
 import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
+import MyOrdersTable from "../shared/myOrdersTable";
+import ConfirmButton from "../shared/confirmButton";
+import ResetButton from "../shared/resetButton";
 
 class MyOrders extends Component {
   state = { currentUser: null };
@@ -16,9 +19,17 @@ class MyOrders extends Component {
       <View style={globalStyles.container}>
         <ShopsPicker />
         <View style={globalStyles.line}></View>
-        <Text>My Orders</Text>
-        <Text>Hi, {currentUser && currentUser.email}</Text>
-        <Button title="confirm" />
+        <Text>Online Order</Text>
+        <View style={globalStyles.line}></View>
+        <MyOrdersTable />
+        <View style={globalStyles.line}></View>
+        <Text style={{ textAlign: "right" }}>
+          Total GST $10 Total Amount $110{" "}
+        </Text>
+        <View style={styles.btnsContainer}>
+          <ConfirmButton text="Reset" />
+          <ResetButton text="confirm" />
+        </View>
         <TouchableOpacity onPress={this.logoutPressHandler}>
           <Text>Log out</Text>
         </TouchableOpacity>
@@ -26,5 +37,13 @@ class MyOrders extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  btnsContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 10,
+  },
+});
 
 export default MyOrders;
