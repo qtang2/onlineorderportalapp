@@ -14,7 +14,6 @@ const Drawer = createDrawerNavigator();
 class DrawerNavigator extends Component {
   render() {
     return (
-      //<NavigationContainer>
       <Drawer.Navigator initialRouteName="MyOrders">
         <Drawer.Screen
           name="MyOrders"
@@ -47,7 +46,6 @@ class DrawerNavigator extends Component {
           options={{ title: "Add Items" }}
         />
       </Drawer.Navigator>
-      //</NavigationContainer>
     );
   }
 }

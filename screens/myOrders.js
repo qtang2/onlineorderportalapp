@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, Button, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import firebase from "../database/firebase";
 import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
@@ -13,6 +13,12 @@ class MyOrders extends Component {
     firebase.auth().signOut();
     this.props.navigation.navigate("Login");
   };
+
+  confirmPressHandler = () => {
+    console.log("confirm pressed");
+    this.props.navigation.navigate("ConfirmOrder");
+  };
+
   render() {
     const { currentUser } = this.state;
     return (
@@ -27,8 +33,8 @@ class MyOrders extends Component {
           Total GST $10 Total Amount $110{" "}
         </Text>
         <View style={styles.btnsContainer}>
-          <ConfirmButton text="Reset" />
-          <ResetButton text="confirm" />
+          <ResetButton text="Reset" />
+          <ConfirmButton text="Confirm" onPress={this.confirmPressHandler} />
         </View>
         <TouchableOpacity onPress={this.logoutPressHandler}>
           <Text>Log out</Text>
