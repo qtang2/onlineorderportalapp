@@ -53,7 +53,7 @@ export const globalStyles = StyleSheet.create({
     alignSelf: "center",
   },
   line: {
-    borderBottomColor: "gray",
+    borderBottomColor: "#d4d4d9",
     borderBottomWidth: 1,
     marginBottom: 12,
     marginTop: 12,

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import firebase from "../database/firebase";
+import { View, Text, StyleSheet } from "react-native";
 import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
 import MyOrdersTable from "../shared/myOrdersTable";
@@ -9,10 +8,6 @@ import ResetButton from "../shared/resetButton";
 
 class MyOrders extends Component {
   state = { currentUser: null };
-  logoutPressHandler = () => {
-    firebase.auth().signOut();
-    this.props.navigation.navigate("Login");
-  };
 
   confirmPressHandler = () => {
     console.log("confirm pressed");
@@ -36,9 +31,6 @@ class MyOrders extends Component {
           <ResetButton text="Reset" />
           <ConfirmButton text="Confirm" onPress={this.confirmPressHandler} />
         </View>
-        <TouchableOpacity onPress={this.logoutPressHandler}>
-          <Text>Log out</Text>
-        </TouchableOpacity>
       </View>
     );
   }
