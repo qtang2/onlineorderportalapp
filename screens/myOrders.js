@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
-import MyOrdersTable from "../shared/myOrdersTable";
+import MyOrdersTable from "../components/myOrdersTable";
 import ConfirmButton from "../shared/confirmButton";
 import ResetButton from "../shared/resetButton";
 

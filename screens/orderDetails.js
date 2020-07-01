@@ -13,7 +13,7 @@ import { Table, Row, Rows } from "react-native-table-component";
 import { globalStyles } from "../styles/global";
 import MyOrdersTable from "../components/myOrdersTable";
 
-export default class ConfirmOrder extends Component {
+export default class OrderDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,83 +51,72 @@ export default class ConfirmOrder extends Component {
     const state = this.state;
     return (
       <View style={globalStyles.container}>
+        <Text style={styles.shopText}> Shop 111</Text>
+        <View style={globalStyles.line}></View>
         <View style={styles.orderInfoContainer}>
           <View style={styles.orderInfo}>
             <View style={styles.orderInfoLeft}>
-              <Text style={styles.infoTextLeft}>Purchase No.</Text>
+              <Text style={styles.infoTextLeft}>Order No.</Text>
               <Text style={styles.infoTextLeft}>Order Date </Text>
+              <Text style={styles.infoTextLeft}>Invoice Date</Text>
+              <Text style={styles.infoTextLeft}>Paid Date</Text>
+              <Text style={styles.infoTextLeft}>Status</Text>
               <Text style={styles.infoTextLeft}>Deliver To</Text>
-              <Text style={styles.infoTextLeft}>Request Deliver Date</Text>
-              {/* <Text style={styles.infoTextLeft}>Note</Text> */}
             </View>
             <View style={styles.orderInfoRight}>
               <Text style={styles.infoTextRight}> PN112345667</Text>
               <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
-              <Text style={styles.infoTextRight}> Address</Text>
               <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
-              {/* <TextInput multiline style={styles.noteInput} /> */}
+              <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
+              <Text style={styles.infoTextRight}> Close</Text>
+              <Text style={styles.infoTextRight}> Address</Text>
             </View>
           </View>
           <View style={styles.noteInfo}>
-            <Text style={styles.infoTextLeft}>Note</Text>
-            <TextInput multiline style={styles.noteInput} />
+            <View style={styles.orderInfoLeft}>
+              <Text style={styles.infoTextLeft}>Note</Text>
+            </View>
+            <View style={styles.orderInfoRight}>
+              <TextInput multiline style={styles.noteInput} />
+            </View>
           </View>
         </View>
-
         <View style={globalStyles.line}></View>
-
-        <View style={styles.tableContainer}>
-          {/* //TODO: This should be order list */}
-          <MyOrdersTable />
-          {/* <ScrollView horizontal={true}>
-            <View>
-              <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
-                <Row
-                  data={state.tableHead}
-                  widthArr={state.widthArr}
-                  style={styles.header}
-                  textStyle={styles.text}
-                />
-              </Table>
-              <ScrollView>
-                <Table borderStyle={{ borderWidth: 1, borderColor: "pink" }}>
-                  <Rows data={state.tableData} widthArr={state.widthArr} />
-                </Table>
-              </ScrollView>
-            </View>
-          </ScrollView> */}
-        </View>
-
-        <View style={globalStyles.line}></View>
-        <View style={styles.btnContainer}>
-          <ConfirmButton text="Submit" onPress={this.submitPressHandler} />
-        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  shopText: {
+    fontSize: 16,
+    alignSelf: "center",
+    // borderWidth: 1,
+  },
   orderInfoContainer: {
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
+    // borderWidth: 1,
   },
   orderInfo: {
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
     alignItems: "center",
+    borderWidth: 1,
   },
 
   orderInfoLeft: {
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
+    borderWidth: 1,
   },
   orderInfoRight: {
-    flex: 1,
+    flex: 2,
     flexDirection: "column",
     alignItems: "flex-end",
+    borderWidth: 1,
   },
   infoTextLeft: {
     textAlign: "center",
@@ -152,9 +141,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 3,
-    width: 230,
+    width: 250,
     height: 90,
-    marginLeft: 60,
+    // marginLeft: 60,
   },
   tableContainer: {
     flex: 1,
