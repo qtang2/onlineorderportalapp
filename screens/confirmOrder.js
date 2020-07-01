@@ -3,21 +3,15 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   Alert,
   ScrollView,
   Image,
   TextInput,
 } from "react-native";
 import ConfirmButton from "../shared/confirmButton";
-import {
-  Table,
-  TableWrapper,
-  Row,
-  Cell,
-  Rows,
-} from "react-native-table-component";
+import { Table, Row, Rows } from "react-native-table-component";
 import { globalStyles } from "../styles/global";
+import MyOrdersTable from "../shared/myOrdersTable";
 
 export default class ConfirmOrder extends Component {
   constructor(props) {
@@ -27,107 +21,156 @@ export default class ConfirmOrder extends Component {
       widthArr: [80, 80, 80, 80, 80, 80, 80],
       tableData: [
         ["1", "2", "3", "4", "2", "2", "0"],
-        ["a", "b", "c", "d", "2", "2", "0"],
         ["1", "2", "3", "4", "2", "2", "0"],
-        ["a", "b", "c", "d", "2", "2", "0"],
         ["1", "2", "3", "4", "2", "2", "0"],
-        ["a", "b", "c", "d", "2", "2", "0"],
         ["1", "2", "3", "4", "2", "2", "0"],
-        ["a", "b", "c", "d", "2", "2", "0"],
         ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        ["1", "2", "3", "4", "2", "2", "0"],
+        [" ", " ", " ", "Total", "20", "20", "20"],
       ],
     };
   }
 
   submitPressHandler = () => {
-    Alert.alert("Congratulations", "Submit Successfully!", [
-      { text: "Understood", onPress: () => console.log("alert close") },
+    Alert.alert(" ", "Submit Successfully!", [
+      {
+        text: "Close",
+        onPress: () => this.props.navigation.navigate("MyOrders"),
+      },
     ]);
   };
   render() {
     const state = this.state;
     return (
       <View style={globalStyles.container}>
-        <View style={styles.orderInfo}>
-          <Text style={styles.infoTextLeft}>Purchase No.</Text>
-          <Text style={styles.infoTextRight}> PN112345667</Text>
-        </View>
-        <View style={styles.orderInfo}>
-          <Text style={styles.infoTextLeft}>Order Date </Text>
-          <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
-        </View>
-        <View style={styles.orderInfo}>
-          <Text style={styles.infoTextLeft}>Deliver To</Text>
-          <Text style={styles.infoTextRight}> Address</Text>
-        </View>
-        <View style={styles.orderInfo}>
-          <Text style={styles.infoTextLeft}>Request Deliver Date</Text>
-          <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
-        </View>
-        <View style={styles.orderInfo}>
-          <Text style={styles.infoTextLeft}>Note</Text>
-          <TextInput multiline style={styles.noteInput} />
+        <View style={styles.orderInfoContainer}>
+          <View style={styles.orderInfo}>
+            <View style={styles.orderInfoLeft}>
+              <Text style={styles.infoTextLeft}>Purchase No.</Text>
+              <Text style={styles.infoTextLeft}>Order Date </Text>
+              <Text style={styles.infoTextLeft}>Deliver To</Text>
+              <Text style={styles.infoTextLeft}>Request Deliver Date</Text>
+            </View>
+            <View style={styles.orderInfoRight}>
+              <Text style={styles.infoTextRight}> PN112345667</Text>
+              <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
+              <Text style={styles.infoTextRight}> Address</Text>
+              <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
+            </View>
+          </View>
+          <View style={styles.noteInfo}>
+            <Text style={styles.infoTextLeft}>Note</Text>
+            <TextInput multiline style={styles.noteInput} />
+          </View>
         </View>
 
         <View style={globalStyles.line}></View>
-        {/* //TODO: this should be a table of product customer bought */}
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
-              <Row
-                data={state.tableHead}
-                widthArr={state.widthArr}
-                style={styles.header}
-                textStyle={styles.text}
-              />
-            </Table>
-            <ScrollView>
-              <Table borderStyle={{ borderWidth: 1, borderColor: "pink" }}>
-                <Rows tableData={state.tableData} />
-              </Table>
-            </ScrollView>
-          </View>
-        </ScrollView>
 
-        <ConfirmButton text="Submit" onPress={this.submitPressHandler} />
+        <View style={styles.tableContainer}>
+          {/* //TODO: This should be order list */}
+          <MyOrdersTable />
+          {/* <ScrollView horizontal={true}>
+            <View>
+              <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
+                <Row
+                  data={state.tableHead}
+                  widthArr={state.widthArr}
+                  style={styles.header}
+                  textStyle={styles.text}
+                />
+              </Table>
+              <ScrollView>
+                <Table borderStyle={{ borderWidth: 1, borderColor: "pink" }}>
+                  <Rows data={state.tableData} widthArr={state.widthArr} />
+                </Table>
+              </ScrollView>
+            </View>
+          </ScrollView> */}
+        </View>
+
+        <View style={globalStyles.line}></View>
+        <View style={styles.btnContainer}>
+          <ConfirmButton text="Submit" onPress={this.submitPressHandler} />
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  orderInfoContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+  },
   orderInfo: {
     flex: 1,
     flexDirection: "row",
+    alignItems: "center",
+  },
+
+  orderInfoLeft: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
+  },
+  orderInfoRight: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-end",
   },
   infoTextLeft: {
-    width: 70,
-    height: 40,
     textAlign: "center",
-    fontSize: 13,
-    marginVertical: -5,
+    fontSize: 14,
+    marginVertical: 7,
   },
   infoTextRight: {
     borderWidth: 1,
     borderColor: "#ddd",
-    width: "70%",
-    height: 30,
+    width: 180,
     textAlign: "center",
-    marginLeft: 20,
-    fontSize: 13,
-    marginVertical: -5,
+    fontSize: 15,
+    marginVertical: 6,
+  },
+  noteInfo: {
+    flex: 1,
+    flexDirection: "row",
+    width: "100%",
+    marginTop: 28,
   },
   noteInput: {
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 3,
-    width: "70%",
-    height: 80,
-    marginLeft: 20,
+    width: 230,
+    height: 90,
+    marginLeft: 60,
+  },
+  tableContainer: {
+    flex: 1,
   },
   text: { margin: 6 },
   row: {
     flexDirection: "row",
   },
   header: { height: 35, backgroundColor: "#1A82C3" },
+  myOrderlist: {
+    width: "100%",
+    maxHeight: 100,
+  },
+  cfmButton: {
+    alignItems: "center",
+    backgroundColor: "pink",
+  },
+  btnContainer: {
+    alignItems: "center",
+  },
 });
