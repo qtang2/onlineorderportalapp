@@ -13,6 +13,8 @@ import { Table, Row, Rows } from "react-native-table-component";
 import { globalStyles } from "../styles/global";
 import MyOrdersTable from "../components/myOrdersTable";
 import OrdersItemsTable from "../components/orderItemsTable";
+import { Icon } from "react-native-elements";
+import Invoice from "../screens/invoice";
 
 export default class OrderDetails extends Component {
   constructor(props) {
@@ -48,6 +50,10 @@ export default class OrderDetails extends Component {
       },
     ]);
   };
+
+  viewInvoice = () => {
+    this.props.navigation.navigate("Invoice");
+  };
   render() {
     const state = this.state;
     return (
@@ -70,6 +76,14 @@ export default class OrderDetails extends Component {
             <View style={styles.orderInfoRight}>
               <Text style={styles.infoTextRight}> PN112345667</Text>
               <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
+              <View style={styles.invoiceInfo}>
+                <Text style={styles.invoiceDateText}> 17-Jun-2019</Text>
+                <Icon
+                  name="visibility"
+                  style={styles.invoiceViewIcon}
+                  onPress={this.viewInvoice}
+                />
+              </View>
               <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
               <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
               <Text style={styles.infoTextRight}> Close</Text>
@@ -95,6 +109,23 @@ export default class OrderDetails extends Component {
 }
 
 const styles = StyleSheet.create({
+  invoiceInfo: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    width: 180,
+    textAlign: "center",
+    height: 22.5,
+  },
+  invoiceDateText: {
+    flex: 5,
+    alignSelf: "center",
+    textAlign: "center",
+  },
+  invoiceViewIcon: {
+    alignSelf: "flex-end",
+    alignContent: "flex-end",
+  },
   shop: {
     flex: 0.5,
     flexDirection: "column",
@@ -118,15 +149,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
+    // borderWidth: 1,
   },
   orderInfoRight: {
     flex: 2,
     flexDirection: "column",
     alignItems: "flex-end",
+    // borderWidth: 1,
   },
   infoTextLeft: {
     textAlign: "center",
-    fontSize: 14,
+    fontSize: 15,
     marginVertical: 7,
   },
   infoTextRight: {

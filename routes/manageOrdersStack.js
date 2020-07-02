@@ -3,6 +3,7 @@ import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import ManageOrders from "../screens/manageOrders";
 import Header from "../shared/header";
 import OrderDetails from "../screens/orderDetails";
+import Invoice from "../screens/invoice";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ class ManageOrdersStack extends Component {
           }}
         />
         <Stack.Screen name="OrderDetails" component={OrderDetails} />
+        <Stack.Screen name="Invoice" component={Invoice} />
       </Stack.Navigator>
     );
   }
