@@ -43,13 +43,13 @@ class Login extends Component {
             { text: "Understood", onPress: () => console.log("alert close") },
           ]);
         });
-      this.props.navigation.navigate("DrawerNavigator");
     }
   };
 
   loginSuccess = (res) => {
     console.log("login Success res param " + res);
     this.setState({ email: "", password: "", error: "", loading: false });
+    this.props.navigation.navigate("MyOrders");
   };
 
   //TODO: signup function

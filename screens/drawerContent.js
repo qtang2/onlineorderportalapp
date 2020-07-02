@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { Avatar, Drawer, Text } from "react-native-paper";
 
