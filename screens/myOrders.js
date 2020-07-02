@@ -20,7 +20,7 @@ class MyOrders extends Component {
       <View style={globalStyles.container}>
         <ShopsPicker />
         <View style={globalStyles.line}></View>
-        <Text>Online Order</Text>
+        <Text style={{ fontSize: 16 }}>Online Order</Text>
         <View style={globalStyles.line}></View>
         <MyOrdersTable />
         <View style={globalStyles.line}></View>

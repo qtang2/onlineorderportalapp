@@ -27,7 +27,7 @@ class ManageOrders extends Component {
         <View style={globalStyles.line}></View>
         <View style={styles.head}>
           <View style={styles.title}>
-            <Text style={{ fontSize: 16 }}>Online Order</Text>
+            <Text style={{ fontSize: 16 }}> Order List</Text>
           </View>
           <View style={styles.searchContainer}>
             <Search onPress={this.search} />

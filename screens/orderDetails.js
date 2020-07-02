@@ -12,6 +12,7 @@ import ConfirmButton from "../shared/confirmButton";
 import { Table, Row, Rows } from "react-native-table-component";
 import { globalStyles } from "../styles/global";
 import MyOrdersTable from "../components/myOrdersTable";
+import OrdersItemsTable from "../components/orderItemsTable";
 
 export default class OrderDetails extends Component {
   constructor(props) {
@@ -51,8 +52,11 @@ export default class OrderDetails extends Component {
     const state = this.state;
     return (
       <View style={globalStyles.container}>
-        <Text style={styles.shopText}> Shop 111</Text>
-        <View style={globalStyles.line}></View>
+        <View style={styles.shop}>
+          <Text style={styles.shopText}> Shop 111</Text>
+          <View style={globalStyles.line}></View>
+        </View>
+
         <View style={styles.orderInfoContainer}>
           <View style={styles.orderInfo}>
             <View style={styles.orderInfoLeft}>
@@ -82,41 +86,43 @@ export default class OrderDetails extends Component {
           </View>
         </View>
         <View style={globalStyles.line}></View>
+        <View style={styles.tableContainer}>
+          <OrdersItemsTable />
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  shop: {
+    flex: 0.5,
+    flexDirection: "column",
+  },
   shopText: {
     fontSize: 16,
     alignSelf: "center",
-    // borderWidth: 1,
   },
   orderInfoContainer: {
-    flex: 1,
+    flex: 2,
     flexDirection: "column",
     alignItems: "center",
-    // borderWidth: 1,
   },
   orderInfo: {
     flex: 2,
     flexDirection: "row",
     alignItems: "center",
-    borderWidth: 1,
   },
 
   orderInfoLeft: {
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-start",
-    borderWidth: 1,
   },
   orderInfoRight: {
     flex: 2,
     flexDirection: "column",
     alignItems: "flex-end",
-    borderWidth: 1,
   },
   infoTextLeft: {
     textAlign: "center",
@@ -142,11 +148,10 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 3,
     width: 250,
-    height: 90,
-    // marginLeft: 60,
+    height: 80,
   },
   tableContainer: {
-    flex: 1,
+    flex: 2,
   },
   text: { margin: 6 },
   row: {

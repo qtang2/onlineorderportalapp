@@ -37,15 +37,6 @@ export default class OrdersItemsTable extends Component {
         ["1", "2", "3", "4"],
         ["a", "b", "c", "d"],
         ["1", "2", "3", "4"],
-        ["a", "b", "c", "d"],
-        ["1", "2", "3", "4"],
-        ["a", "b", "c", "d"],
-        ["1", "2", "3", "4"],
-        ["a", "b", "c", "d"],
-        ["1", "2", "3", "4"],
-        ["a", "b", "c", "d"],
-        ["1", "2", "3", "4"],
-        ["a", "b", "c", "d"],
       ],
     };
   }
@@ -65,7 +56,7 @@ export default class OrdersItemsTable extends Component {
           </Table>
           <ScrollView>
             <Table borderStyle={{ borderWidth: 1, borderColor: "pink" }}>
-              <Rows data={state.tableData} />
+              <Rows data={state.tableData} widthArr={state.widthArr} />
             </Table>
           </ScrollView>
         </View>
