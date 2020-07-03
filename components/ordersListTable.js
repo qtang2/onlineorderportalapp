@@ -70,7 +70,7 @@ export default class OrdersListTable extends Component {
     return (
       <ScrollView horizontal={true}>
         <View>
-          <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
+          <Table borderStyle={globalStyles.tableBorder}>
             <Row
               data={state.tableHead}
               widthArr={state.widthArr}
@@ -79,7 +79,7 @@ export default class OrdersListTable extends Component {
             />
           </Table>
           <ScrollView>
-            <Table borderStyle={{ borderWidth: 1, borderColor: "pink" }}>
+            <Table borderStyle={globalStyles.tableBorder}>
               {state.tableData.map((rowData, index) => (
                 <TableWrapper key={index} style={styles.row}>
                   {rowData.map((cellData, cellIndex) => (

@@ -58,4 +58,8 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 12,
     marginTop: 12,
   },
+  tableBorder: {
+    borderWidth: 1,
+    borderColor: "#C1C0B9",
+  },
 });

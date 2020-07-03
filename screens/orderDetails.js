@@ -64,41 +64,84 @@ export default class OrderDetails extends Component {
         </View>
 
         <View style={styles.orderInfoContainer}>
-          <View style={styles.orderInfo}>
-            <View style={styles.orderInfoLeft}>
-              <Text style={styles.infoTextLeft}>Order No.</Text>
-              <Text style={styles.infoTextLeft}>Order Date </Text>
-              <Text style={styles.infoTextLeft}>Invoice Date</Text>
-              <Text style={styles.infoTextLeft}>Paid Date</Text>
-              <Text style={styles.infoTextLeft}>Status</Text>
-              <Text style={styles.infoTextLeft}>Deliver To</Text>
+          <View style={styles.orderInfoRow}>
+            <View style={styles.orderInfoRowLeft}>
+              <Text style={styles.infoTextLeft}>Order No. </Text>
             </View>
-            <View style={styles.orderInfoRight}>
+
+            <View style={styles.orderInfoRowRight}>
               <Text style={styles.infoTextRight}> PN112345667</Text>
-              <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
+            </View>
+          </View>
+
+          <View style={styles.orderInfoRow}>
+            <View style={styles.orderInfoRowLeft}>
+              <Text style={styles.infoTextLeft}>Order Date</Text>
+            </View>
+
+            <View style={styles.orderInfoRowRight}>
+              <Text style={styles.infoTextRight}> 17-Jun-2019 </Text>
+            </View>
+          </View>
+
+          <View style={styles.orderInfoRow}>
+            <View style={styles.orderInfoInvoiceRowLeft}>
+              <Text style={styles.infoTextLeft}>Invoice Date</Text>
+            </View>
+
+            <View style={styles.orderInfoInvoiceRowRight}>
               <View style={styles.invoiceInfo}>
                 <Text style={styles.invoiceDateText}> 17-Jun-2019</Text>
                 <Icon
                   name="visibility"
-                  style={styles.invoiceViewIcon}
                   onPress={this.viewInvoice}
+                  style={styles.invoiceViewIcon}
                 />
               </View>
-              <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
-              <Text style={styles.infoTextRight}> 17-Jun-2019</Text>
-              <Text style={styles.infoTextRight}> Close</Text>
-              <Text style={styles.infoTextRight}> Address</Text>
             </View>
           </View>
-          <View style={styles.noteInfo}>
-            <View style={styles.orderInfoLeft}>
-              <Text style={styles.infoTextLeft}>Note</Text>
+
+          <View style={styles.orderInfoRow}>
+            <View style={styles.orderInfoRowLeft}>
+              <Text style={styles.infoTextLeft}>Paid Date</Text>
             </View>
-            <View style={styles.orderInfoRight}>
-              <TextInput multiline style={styles.noteInput} />
+
+            <View style={styles.orderInfoRowRight}>
+              <Text style={styles.infoTextRight}> 17-Jun-2019 </Text>
+            </View>
+          </View>
+
+          <View style={styles.orderInfoRow}>
+            <View style={styles.orderInfoRowLeft}>
+              <Text style={styles.infoTextLeft}>Status</Text>
+            </View>
+
+            <View style={styles.orderInfoRowRight}>
+              <Text style={styles.infoTextRight}> Closed </Text>
+            </View>
+          </View>
+
+          <View style={styles.orderInfoRow}>
+            <View style={styles.orderInfoRowLeft}>
+              <Text style={styles.infoTextLeft}> Deliver To </Text>
+            </View>
+
+            <View style={styles.orderInfoRowRight}>
+              <Text style={styles.infoTextRight}> Address 111 </Text>
+            </View>
+          </View>
+
+          <View style={styles.orderInfoNoteRow}>
+            <View style={styles.orderInfoRowLeft}>
+              <Text style={styles.infoTextLeft}> Note </Text>
+            </View>
+
+            <View style={styles.orderInfoRowRight}>
+              <Text style={styles.noteInput}> note note note </Text>
             </View>
           </View>
         </View>
+
         <View style={globalStyles.line}></View>
         <View style={styles.tableContainer}>
           <OrdersItemsTable />
@@ -109,22 +152,44 @@ export default class OrderDetails extends Component {
 }
 
 const styles = StyleSheet.create({
+  orderInfoRow: {
+    flexDirection: "row",
+    flex: 1,
+  },
+  orderInfoNoteRow: {
+    flexDirection: "row",
+    flex: 3,
+  },
+  orderInfoRowLeft: {
+    flexDirection: "column",
+    flex: 1.5,
+    // borderWidth: 1,
+    // borderColor: "green",
+  },
+  orderInfoRowRight: {
+    flexDirection: "column",
+    flex: 3,
+    // borderWidth: 1,
+    // borderColor: "pink",
+    // alignItems: "center",
+  },
   invoiceInfo: {
     flexDirection: "row",
     borderWidth: 1,
     borderColor: "#ddd",
-    width: 180,
-    textAlign: "center",
-    height: 22.5,
   },
+  orderInfoInvoiceRowLeft: { flexDirection: "column", flex: 1.5 },
+  orderInfoInvoiceRowRight: { flexDirection: "column", flex: 1.93 },
   invoiceDateText: {
-    flex: 5,
-    alignSelf: "center",
+    flex: 3.5,
+    // alignSelf: "center",
     textAlign: "center",
+    // borderWidth: 1,
   },
   invoiceViewIcon: {
-    alignSelf: "flex-end",
-    alignContent: "flex-end",
+    // borderWidth: 1,
+    borderColor: "pink",
+    flex: 0.5,
   },
   shop: {
     flex: 0.5,
@@ -144,23 +209,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-
-  orderInfoLeft: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    // borderWidth: 1,
-  },
-  orderInfoRight: {
-    flex: 2,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    // borderWidth: 1,
-  },
   infoTextLeft: {
     textAlign: "center",
     fontSize: 15,
-    marginVertical: 7,
+    // marginVertical: 7,
+    alignSelf: "flex-start",
   },
   infoTextRight: {
     borderWidth: 1,
@@ -168,7 +221,7 @@ const styles = StyleSheet.create({
     width: 180,
     textAlign: "center",
     fontSize: 15,
-    marginVertical: 6,
+    alignSelf: "flex-end",
   },
   noteInfo: {
     flex: 1,
@@ -182,6 +235,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     width: 250,
     height: 80,
+    alignSelf: "flex-end",
   },
   tableContainer: {
     flex: 2,

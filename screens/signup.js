@@ -35,6 +35,7 @@ class Signup extends Component {
       confirmPassword: "",
       error: "",
     });
+    this.props.navigation.navigate("MyOrders");
   };
 
   signupPressHandler = () => {
@@ -59,9 +60,6 @@ class Signup extends Component {
           ]);
         });
     }
-    // this.props.navigation.navigate("MyOrders");
-    this.props.navigation.navigate("DrawerNavigator");
-    console.log(this.state.email);
   };
 
   loginPressHandler = () => {
