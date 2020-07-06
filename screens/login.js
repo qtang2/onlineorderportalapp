@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import LoginButton from "../shared/button";
 import { globalStyles } from "../styles/global";
+// import database from "@react-native-firebase/database";
 import firebase from "../database/firebase";
 
 class Login extends Component {
@@ -23,7 +24,7 @@ class Login extends Component {
   };
 
   loginPressHandler = () => {
-    console.log("button clicked");
+    console.log("login button clicked");
     if (this.state.email === "" || this.state.password === "") {
       Alert.alert("OOPS!", "Please enter your details", [
         { text: "Understood", onPress: () => console.log("alert close") },
@@ -47,12 +48,11 @@ class Login extends Component {
   };
 
   loginSuccess = (res) => {
-    console.log("login Success res param " + res);
+    console.log("login Success");
     this.setState({ email: "", password: "", error: "", loading: false });
     this.props.navigation.navigate("MyOrders");
   };
 
-  //TODO: signup function
   signupPressHandler = () => {
     this.props.navigation.navigate("Signup");
   };
@@ -62,7 +62,6 @@ class Login extends Component {
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
-          console.log("dismmmmmmmmmisss");
         }}
       >
         <View style={globalStyles.container}>

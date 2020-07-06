@@ -29,7 +29,7 @@ class Signup extends Component {
     res.user.updateProfile({ displayName: this.state.email });
     console.log("signup sueccesfully");
     this.setState({
-      loa: false,
+      loading: false,
       email: "",
       password: "",
       confirmPassword: "",

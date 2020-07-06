@@ -24,6 +24,7 @@ export default Search;
 const styles = StyleSheet.create({
   searchContiner: {
     flexDirection: "row",
+    // borderWidth: 1,
   },
   searchInput: {
     borderRadius: 3,
