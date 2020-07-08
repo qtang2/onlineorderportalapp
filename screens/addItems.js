@@ -43,8 +43,8 @@ export default class AddItems extends Component {
             category: child.toJSON().category,
             price: child.toJSON().price,
             //add two more props for selection
-            isisSelected: false,
-            isSelectedClass: styles.list,
+            isSelected: false,
+            // isSelectedClass: styles.list,
           });
         });
         this.setState({
@@ -54,12 +54,37 @@ export default class AddItems extends Component {
       });
   }
 
-  selectItem = (data) => {
-    console.log("long presssss@@@@@@@@@@@@@@@@@@@@@");
-    // console.log(data.isisSelected);
+  selectionHandler = (itemCode) => {
+    let renderItems = [...this.state.items];
+    for (let item of renderItems) {
+      if (item.itemCode == itemCode) {
+        item.isSelected = !item.isSelected;
+        break;
+      }
+    }
+    this.setState({ renderItems });
   };
-  //
+
+  resetSelections = () => {
+    let renderItems = [...this.state.items];
+    for (let item of renderItems) {
+      item.isSelected = false;
+    }
+    this.setState({ renderItems });
+  };
+
+  addSelections = () => {
+    let renderItems = [...this.state.items];
+    for (let item of renderItems) {
+      if (item.isSelected == true) {
+        console.log(item.itemCode);
+      }
+    }
+    this.setState({ renderItems });
+  };
+
   render() {
+    console.log("$$$$$$$$$$$");
     // console.log(this.state.items);
     return (
       <View style={globalStyles.container}>
@@ -86,8 +111,30 @@ export default class AddItems extends Component {
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
-                style={styles.list}
-                onLongPress={console.log("long presssss@@@@@@@@@@@@@@@@@@@@@")}
+                style={
+                  item.isSelected == true
+                    ? {
+                        flexDirection: "row",
+                        borderRadius: 6,
+                        borderWidth: 1,
+                        elevation: 3,
+                        backgroundColor: "pink",
+                        marginHorizontal: 2,
+                        marginVertical: 4,
+                        opacity: 0.6,
+                      }
+                    : {
+                        flexDirection: "row",
+                        borderRadius: 6,
+                        borderWidth: 1,
+                        elevation: 3,
+                        backgroundColor: "#ffff",
+                        marginHorizontal: 2,
+                        marginVertical: 4,
+                        opacity: 0.8,
+                      }
+                }
+                onPress={() => this.selectionHandler(item.itemCode)}
               >
                 <View style={styles.imageContainer}>
                   <Image
@@ -98,7 +145,7 @@ export default class AddItems extends Component {
                 <View style={styles.itemInfoContainer}>
                   <Text>{item.itemName}</Text>
                   <Text>
-                    $ {item.price}, GST: {item.GST}
+                    $ {item.price}, GST: ${item.GST}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -108,8 +155,8 @@ export default class AddItems extends Component {
         <View
           style={{ flexDirection: "row", alignItems: "center", borderWidth: 1 }}
         >
-          <ResetButton text="Reset" />
-          <ConfirmButton text="Add" />
+          <ResetButton text="Reset" onPress={this.resetSelections} />
+          <ConfirmButton text="Add" onPress={this.addSelections} />
         </View>
       </View>
     );
@@ -150,7 +197,17 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     elevation: 3,
-    backgroundColor: "#ffff",
+    backgroundColor: "green",
+    marginHorizontal: 2,
+    marginVertical: 4,
+    opacity: 0.8,
+  },
+  itemSelectedRow: {
+    flexDirection: "row",
+    borderRadius: 6,
+    borderWidth: 1,
+    elevation: 3,
+    backgroundColor: "yellow",
     marginHorizontal: 2,
     marginVertical: 4,
     opacity: 0.8,
