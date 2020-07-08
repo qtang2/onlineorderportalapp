@@ -73,14 +73,25 @@ export default class AddItems extends Component {
     this.setState({ renderItems });
   };
 
+  //TODO: need to handle repeated selections
   addSelections = () => {
-    let renderItems = [...this.state.items];
-    for (let item of renderItems) {
-      if (item.isSelected == true) {
-        console.log(item.itemCode);
+    var user = firebase.auth().currentUser;
+    if (user) {
+      let renderItems = [...this.state.items];
+      for (let item of renderItems) {
+        if (item.isSelected == true) {
+          console.log(item.itemCode);
+          firebase.database().ref("/myItems").push({
+            itemCode: item.itemCode,
+            uid: user.uid,
+          });
+          alert("Add successfully!");
+          // console.log(item.itemCode);
+        }
       }
+    } else {
+      console.log("no such a user");
     }
-    this.setState({ renderItems });
   };
 
   render() {
@@ -153,7 +164,11 @@ export default class AddItems extends Component {
           }}
         />
         <View
-          style={{ flexDirection: "row", alignItems: "center", borderWidth: 1 }}
+          style={{
+            flexDirection: "row",
+            alignContent: "center",
+            borderWidth: 1,
+          }}
         >
           <ResetButton text="Reset" onPress={this.resetSelections} />
           <ConfirmButton text="Add" onPress={this.addSelections} />

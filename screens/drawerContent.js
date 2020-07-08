@@ -4,8 +4,10 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { Avatar, Drawer, Text } from "react-native-paper";
+import firebase from "../database/firebase";
 
 function HomeDrawerContent(props) {
+  var currentUser = firebase.auth().currentUser;
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -19,8 +21,7 @@ function HomeDrawerContent(props) {
               <Avatar.Image source={require("../assets/coffeecup.png")} />
               <View style={styles.welcome}>
                 <Text>Welcome</Text>
-                {/* TODO: this should show the user's name */}
-                <Text> User1</Text>
+                <Text> {currentUser.email}</Text>
               </View>
             </View>
           </View>
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "column",
     marginLeft: 10,
   },
 });
