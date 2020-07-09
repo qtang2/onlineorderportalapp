@@ -13,6 +13,7 @@ import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
 import Search from "../shared/search";
 import Item from "../components/item";
+import { SearchBar } from "react-native-elements";
 
 export default class MyItems extends Component {
   constructor(props) {
@@ -20,7 +21,9 @@ export default class MyItems extends Component {
     this.state = {
       dataFetched: false,
       myItems: [],
+      search: "",
     };
+    this.arrayholder = [];
   }
 
   fetchData = () => {
@@ -48,6 +51,7 @@ export default class MyItems extends Component {
           dataFetched: true,
           myItems: itemsList,
         });
+        this.arrayholder = itemsList;
       });
     });
   };
@@ -56,27 +60,32 @@ export default class MyItems extends Component {
     this.fetchData();
   }
 
+  searchFilterFunction = (text) => {
+    // console.log("$$$$$$$$$$$$$$");
+    const newData = this.arrayholder.filter((item) => {
+      const itemData = `${item.itemName.toUpperCase()}`;
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({ myItems: newData, search: text });
+  };
+
   render() {
-    // console.log(this.state.myItems);
     return (
       <View style={globalStyles.container}>
-        <Text>My Items List</Text>
-        <View style={globalStyles.line}></View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flex: 3, alignItems: "flex-start" }}>
-            <ShopsPicker />
-          </View>
-          <View
-            style={{
-              flex: 2,
-              alignItems: "flex-end",
-              paddingTop: 10,
-            }}
-          >
-            <Search />
-          </View>
-        </View>
-        <View style={globalStyles.line}></View>
+        <ShopsPicker />
+        {/* <View style={globalStyles.line}></View> */}
+
+        <SearchBar
+          placeholder="Type Here..."
+          lightTheme
+          onChangeText={(text) => this.searchFilterFunction(text)}
+          autoCorrect={false}
+          value={this.state.search}
+          containerStyle={globalStyles.searchBarContainer}
+          inputContainerStyle={globalStyles.searchBarInputContainer}
+        />
+        {/* <View style={globalStyles.line}></View> */}
         <FlatList
           keyExtractor={(item) => item.itemCode}
           data={this.state.myItems}

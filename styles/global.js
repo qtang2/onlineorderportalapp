@@ -55,11 +55,17 @@ export const globalStyles = StyleSheet.create({
   line: {
     borderBottomColor: "#d4d4d9",
     borderBottomWidth: 1,
-    marginBottom: 12,
-    marginTop: 12,
+    marginBottom: 6,
+    marginTop: 6,
   },
   tableBorder: {
     borderWidth: 1,
     borderColor: "#C1C0B9",
+  },
+  searchBarContainer: {
+    backgroundColor: "#ffff",
+  },
+  searchBarInputContainer: {
+    opacity: 0.7,
   },
 });

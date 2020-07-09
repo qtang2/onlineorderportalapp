@@ -16,6 +16,7 @@ import Item from "../components/item";
 import ConfirmButton from "../shared/confirmButton";
 import ResetButton from "../shared/resetButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { SearchBar } from "react-native-elements";
 
 export default class AddItems extends Component {
   constructor(props) {
@@ -24,7 +25,9 @@ export default class AddItems extends Component {
       dataFetched: false,
       items: [],
       isSelectedItem: null,
+      search: "",
     };
+    this.arrayholder = [];
   }
 
   fetchItemsData = () => {
@@ -50,6 +53,7 @@ export default class AddItems extends Component {
           dataFetched: true,
           items: itemsList,
         });
+        this.arrayholder = itemsList;
       });
   };
 
@@ -100,26 +104,30 @@ export default class AddItems extends Component {
     }
   };
 
+  searchFilterFunction = (text) => {
+    console.log("@@@@@@@@@@@@");
+    const newData = this.arrayholder.filter((item) => {
+      const itemData = `${item.itemName.toUpperCase()}`;
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({ items: newData, search: text });
+  };
+
   render() {
     return (
       <View style={globalStyles.container}>
-        <Text>Items List</Text>
-        <View style={globalStyles.line}></View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flex: 3, alignItems: "flex-start" }}>
-            <ShopsPicker />
-          </View>
-          <View
-            style={{
-              flex: 2,
-              alignItems: "flex-end",
-              paddingTop: 10,
-            }}
-          >
-            <Search />
-          </View>
-        </View>
-        <View style={globalStyles.line}></View>
+        <ShopsPicker />
+        <SearchBar
+          placeholder="Type Here..."
+          lightTheme
+          onChangeText={(text) => this.searchFilterFunction(text)}
+          autoCorrect={false}
+          value={this.state.search}
+          containerStyle={globalStyles.searchBarContainer}
+          inputContainerStyle={globalStyles.searchBarInputContainer}
+        />
+
         <FlatList
           keyExtractor={(item) => item.itemCode}
           data={this.state.items}

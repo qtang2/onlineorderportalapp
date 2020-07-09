@@ -26,5 +26,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 30,
     textAlign: "center",
+    opacity: 0.8,
   },
 });
