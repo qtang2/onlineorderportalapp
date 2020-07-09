@@ -1,24 +1,57 @@
-import React, { useState } from "react";
-import { StyleSheet, Picker, View } from "react-native";
+import React, { useState, Component } from "react";
+import { StyleSheet, Picker, View, Text } from "react-native";
 
-function ShopsPicker() {
-  const [selectedValue, setSelectedValue] = useState("");
-  return (
-    <View style={styles.picker}>
-      <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-        mode="dropdown"
-        itemStyle={styles.itemStyle}
-      >
-        <Picker.Item label="Shop111" value="shop111" />
-        <Picker.Item label="Shop222" value="shop222" />
-      </Picker>
-    </View>
-  );
+import firebase from "../database/firebase";
+
+export default class ShopsPicker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataFetched: false,
+      myShops: [],
+      selectedShop: "",
+    };
+  }
+
+  fetchShopsData = () => {
+    var rootRef = firebase.database().ref();
+    var currentUserId = firebase.auth().currentUser.uid;
+    var myShopsRef = rootRef.child("myShops");
+    var shopsList = [];
+
+    myShopsRef.child(currentUserId).on("child_added", (snapshot) => {
+      // console.log(snapshot.toJSON().shopName);
+      shopsList.push(snapshot.toJSON().shopName);
+      this.setState({
+        dataFetched: true,
+        myShops: shopsList,
+      });
+    });
+  };
+
+  componentDidMount() {
+    this.fetchShopsData();
+  }
+
+  shopsPickerItemsList = () => {
+    return this.state.myShops.map((shop, i) => {
+      return <Picker.Item label={shop} key={i} value={shop} />;
+    });
+  };
+  render() {
+    return (
+      <View style={styles.picker}>
+        <Picker
+          selectedValue={this.state.selectedShop}
+          onValueChange={(value) => this.setState({ selectedShop: value })}
+          mode="dropdown"
+        >
+          {this.shopsPickerItemsList()}
+        </Picker>
+      </View>
+    );
+  }
 }
-
-export default ShopsPicker;
 
 const styles = StyleSheet.create({
   picker: {

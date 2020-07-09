@@ -13,9 +13,6 @@ import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
 import Search from "../shared/search";
 import Item from "../components/item";
-import ConfirmButton from "../shared/confirmButton";
-import ResetButton from "../shared/resetButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class MyItems extends Component {
   constructor(props) {
@@ -43,6 +40,8 @@ export default class MyItems extends Component {
           itemImage: snap.toJSON().itemImage,
           GST: snap.toJSON().GST,
           category: snap.toJSON().category,
+          location: snapshot.toJSON().location,
+          CICode: snapshot.toJSON().CICode,
         };
         itemsList.push(obj);
         this.setState({
@@ -58,6 +57,7 @@ export default class MyItems extends Component {
   }
 
   render() {
+    // console.log(this.state.myItems);
     return (
       <View style={globalStyles.container}>
         <Text>My Items List</Text>
@@ -82,11 +82,14 @@ export default class MyItems extends Component {
           data={this.state.myItems}
           renderItem={({ item }) => (
             <Item
+              itemCode={item.itemCode}
               itemName={item.itemName}
               price={item.price}
               itemImage={item.itemImage}
               GST={item.GST}
               category={item.category}
+              location={item.location}
+              CICode={item.CICode}
             />
           )}
         />

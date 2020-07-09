@@ -15,7 +15,6 @@ class MyOrders extends Component {
   };
 
   render() {
-    const { currentUser } = this.state;
     return (
       <View style={globalStyles.container}>
         <ShopsPicker />

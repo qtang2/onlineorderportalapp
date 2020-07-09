@@ -2,13 +2,14 @@ import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 
 export default function Item({
+  itemCode,
   itemName,
   price,
   itemImage,
   GST,
   category,
-  isSelected,
-  selectedClass,
+  CICode,
+  location,
 }) {
   return (
     <View style={styles.itemRow}>
@@ -17,12 +18,15 @@ export default function Item({
           source={require("../assets/coffeecup.png")}
           style={styles.image}
         />
+        <Text style={styles.itemCodeText}>{itemCode}</Text>
       </View>
       <View style={styles.itemInfoContainer}>
-        <Text>{itemName}</Text>
-        <Text>
+        <Text style={styles.itemText}>{itemName}</Text>
+        <Text style={styles.itemText}>
           $ {price}, GST: {GST}
         </Text>
+        <Text style={styles.itemText}>C.I. Code: {CICode}</Text>
+        <Text style={styles.itemText}>Location: {location}</Text>
       </View>
       {/* <View style={styles.cardContent}>{props.children}</View> */}
     </View>
@@ -30,6 +34,13 @@ export default function Item({
 }
 
 const styles = StyleSheet.create({
+  itemText: {
+    borderBottomWidth: 1,
+    borderColor: "#d4d4d9",
+    // alignSelf: "center",
+    marginVertical: 5,
+    // paddingVertical: 10,
+  },
   image: {
     width: 50,
     height: 50,
@@ -37,14 +48,19 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginLeft: 3,
   },
+  itemCodeText: {
+    alignSelf: "center",
+  },
   itemInfoContainer: {
     flex: 3,
     flexDirection: "column",
+    // marginVertical: 5,
+    // paddingVertical: 5,
     // borderBottomWidth: 1,
   },
   imageContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     // borderWidth: 1,
     // borderBottomWidth: 1,
   },

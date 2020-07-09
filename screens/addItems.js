@@ -27,8 +27,7 @@ export default class AddItems extends Component {
     };
   }
 
-  componentDidMount() {
-    // var itemLst = [];
+  fetchItemsData = () => {
     firebase
       .database()
       .ref("/items")
@@ -52,6 +51,11 @@ export default class AddItems extends Component {
           items: itemsList,
         });
       });
+  };
+
+  componentDidMount() {
+    // var itemLst = [];
+    this.fetchItemsData();
   }
 
   selectionHandler = (itemCode) => {
@@ -88,8 +92,6 @@ export default class AddItems extends Component {
             .set({
               itemName: item.itemName,
             });
-
-          console.log("adddddddd " + item.itemCode);
         }
         alert("Add successfully!");
       }
@@ -99,8 +101,6 @@ export default class AddItems extends Component {
   };
 
   render() {
-    // console.log("$$$$$$$$$$$**********************");
-    // console.log(this.state.items);
     return (
       <View style={globalStyles.container}>
         <Text>Items List</Text>
@@ -156,10 +156,11 @@ export default class AddItems extends Component {
                     source={require("../assets/coffeecup.png")}
                     style={styles.image}
                   />
+                  <Text style={styles.itemCodeText}>{item.itemCode}</Text>
                 </View>
                 <View style={styles.itemInfoContainer}>
-                  <Text>{item.itemName}</Text>
-                  <Text>
+                  <Text style={styles.itemNameText}>{item.itemName}</Text>
+                  <Text style={styles.itemPriceText}>
                     $ {item.price}, GST: ${item.GST}
                   </Text>
                 </View>
@@ -167,11 +168,12 @@ export default class AddItems extends Component {
             );
           }}
         />
+        <View style={globalStyles.line}></View>
         <View
           style={{
             flexDirection: "row",
-            alignContent: "center",
-            borderWidth: 1,
+            justifyContent: "flex-end",
+            // borderWidth: 1,
           }}
         >
           <ResetButton text="Reset" onPress={this.resetSelections} />
@@ -183,15 +185,22 @@ export default class AddItems extends Component {
 }
 
 const styles = StyleSheet.create({
-  list: {
-    flexDirection: "row",
-    borderRadius: 6,
-    borderWidth: 1,
-    elevation: 3,
-    backgroundColor: "pink",
-    marginHorizontal: 2,
-    marginVertical: 4,
-    opacity: 0.8,
+  itemCodeText: {
+    alignSelf: "center",
+  },
+  itemNameText: {
+    borderBottomWidth: 1,
+    borderColor: "#d4d4d9",
+    // alignSelf: "center",
+    marginVertical: 5,
+    // paddingVertical: 5,
+  },
+  itemPriceText: {
+    borderBottomWidth: 1,
+    borderColor: "#d4d4d9",
+    // alignSelf: "center",
+    marginVertical: 5,
+    // paddingVertical: 10,
   },
   image: {
     width: 50,
@@ -207,7 +216,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     // borderWidth: 1,
     // borderBottomWidth: 1,
   },
