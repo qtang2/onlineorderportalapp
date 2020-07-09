@@ -75,19 +75,23 @@ export default class AddItems extends Component {
 
   //TODO: need to handle repeated selections
   addSelections = () => {
-    var user = firebase.auth().currentUser;
-    if (user) {
+    var currentUser = firebase.auth().currentUser;
+    if (currentUser) {
       let renderItems = [...this.state.items];
       for (let item of renderItems) {
         if (item.isSelected == true) {
-          console.log(item.itemCode);
-          firebase.database().ref("/myItems").push({
-            itemCode: item.itemCode,
-            uid: user.uid,
-          });
-          alert("Add successfully!");
-          // console.log(item.itemCode);
+          firebase
+            .database()
+            .ref("/myItems")
+            .child(currentUser.uid)
+            .child(item.itemCode)
+            .set({
+              itemName: item.itemName,
+            });
+
+          console.log("adddddddd " + item.itemCode);
         }
+        alert("Add successfully!");
       }
     } else {
       console.log("no such a user");
@@ -95,7 +99,7 @@ export default class AddItems extends Component {
   };
 
   render() {
-    console.log("$$$$$$$$$$$");
+    // console.log("$$$$$$$$$$$**********************");
     // console.log(this.state.items);
     return (
       <View style={globalStyles.container}>
@@ -132,7 +136,7 @@ export default class AddItems extends Component {
                         backgroundColor: "pink",
                         marginHorizontal: 2,
                         marginVertical: 4,
-                        opacity: 0.6,
+                        opacity: 0.7,
                       }
                     : {
                         flexDirection: "row",

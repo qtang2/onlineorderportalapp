@@ -27,41 +27,37 @@ export default class MyItems extends Component {
   }
 
   fetchData = () => {
-    console.log("#########");
-    var currentUser = firebase.auth().currentUser;
-    firebase
-      .database()
-      .ref("/myItems")
-      .once("value", (snapshot) => {
-        const itemsList = [];
-        snapshot.forEach((child) => {
-          var uid = child.toJSON().uid;
-          var itemCode = child.toJSON().itemCode;
-          if (currentUser.uid == uid) {
-            console.log(uid);
-          }
+    var rootRef = firebase.database().ref();
+    var currentUserId = firebase.auth().currentUser.uid;
+    var myItemsRef = rootRef.child("myItems");
+    var itemsRef = rootRef.child("items");
+    var itemsList = [];
 
-          // itemsList.push({
-          //   itemCode: child.key,
-          //   itemName: child.toJSON().itemName,
-          //   itemImage: child.toJSON().itemImage,
-          //   GST: child.toJSON().GST,
-          //   category: child.toJSON().category,
-          //   price: child.toJSON().price,
-          //   // isSelected: false,
-          //   // isSelectedClass: styles.list,
-          // });
+    myItemsRef.child(currentUserId).on("child_added", (snapshot) => {
+      let itemRef = itemsRef.child(snapshot.key);
+      itemRef.once("value", (snap) => {
+        var obj = {
+          itemCode: snap.key,
+          itemName: snap.toJSON().itemName,
+          price: snap.toJSON().price,
+          itemImage: snap.toJSON().itemImage,
+          GST: snap.toJSON().GST,
+          category: snap.toJSON().category,
+        };
+        itemsList.push(obj);
+        this.setState({
+          dataFetched: true,
+          myItems: itemsList,
         });
       });
+    });
   };
 
   componentDidMount() {
-    // var itemLst = [];
-    this.fetchData;
+    this.fetchData();
   }
 
   render() {
-    // console.log(this.state.items);
     return (
       <View style={globalStyles.container}>
         <Text>My Items List</Text>
@@ -81,63 +77,20 @@ export default class MyItems extends Component {
           </View>
         </View>
         <View style={globalStyles.line}></View>
-        <FlatList />
+        <FlatList
+          keyExtractor={(item) => item.itemCode}
+          data={this.state.myItems}
+          renderItem={({ item }) => (
+            <Item
+              itemName={item.itemName}
+              price={item.price}
+              itemImage={item.itemImage}
+              GST={item.GST}
+              category={item.category}
+            />
+          )}
+        />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  list: {
-    flexDirection: "row",
-    borderRadius: 6,
-    borderWidth: 1,
-    elevation: 3,
-    backgroundColor: "pink",
-    marginHorizontal: 2,
-    marginVertical: 4,
-    opacity: 0.8,
-  },
-  image: {
-    width: 50,
-    height: 50,
-    alignSelf: "center",
-    borderRadius: 3,
-    marginLeft: 3,
-  },
-  itemInfoContainer: {
-    flex: 3,
-    flexDirection: "column",
-    // borderBottomWidth: 1,
-  },
-  imageContainer: {
-    flex: 1,
-    flexDirection: "row",
-    // borderWidth: 1,
-    // borderBottomWidth: 1,
-  },
-  itemRow: {
-    flexDirection: "row",
-    borderRadius: 6,
-    borderWidth: 1,
-    elevation: 3,
-    backgroundColor: "green",
-    marginHorizontal: 2,
-    marginVertical: 4,
-    opacity: 0.8,
-  },
-  itemSelectedRow: {
-    flexDirection: "row",
-    borderRadius: 6,
-    borderWidth: 1,
-    elevation: 3,
-    backgroundColor: "yellow",
-    marginHorizontal: 2,
-    marginVertical: 4,
-    opacity: 0.8,
-  },
-  cardContent: {
-    marginHorizontal: 18,
-    marginVertical: 20,
-  },
-});
