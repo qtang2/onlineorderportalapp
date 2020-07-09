@@ -7,6 +7,7 @@ import {
   Button,
   Alert,
   Image,
+  Picker,
 } from "react-native";
 import firebase from "../database/firebase";
 import { globalStyles } from "../styles/global";
@@ -22,20 +23,72 @@ export default class MyItems extends Component {
       dataFetched: false,
       myItems: [],
       search: "",
+      myShops: [],
+      selectedShop: "",
     };
     this.arrayholder = [];
   }
 
   fetchData = () => {
+    console.log(this.state.selectedShop);
     var rootRef = firebase.database().ref();
     var currentUserId = firebase.auth().currentUser.uid;
+
+    var myShopsRef = rootRef.child("myShops");
+    var shopsList = [];
+
+    // Get all the shops for the user
+    myShopsRef.child(currentUserId).on("child_added", (snapshot) => {
+      // console.log(snapshot.toJSON().shopName);
+      var shopObj = {
+        shopId: snapshot.key,
+        shopName: snapshot.toJSON().shopName,
+      };
+      shopsList.push(shopObj);
+      this.setState({
+        // dataFetched: true,
+        myShops: shopsList,
+      });
+    });
+
+    // Get all the items of this user of this shop
+    // var myItemsRef = rootRef.child("myItems");
+    // var itemsRef = rootRef.child("items");
+    // var itemsList = [];
+    // console.log(
+    //   "selected shop id #######  " + this.state.selectedShop.toString()
+    // );
+    // myShopsRef
+    //   .child(currentUserId)
+    //   .child(this.state.selectedShop.toString())
+    //   .on("child_added", (snapshot) => {
+    //     console.log("snaaaaaaaaaap shot key     " + snapshot.key);
+    //     let itemRef = itemsRef.child(snapshot.key);
+    //     itemRef.once("value", (snap) => {
+    //       var obj = {
+    //         itemCode: snap.key,
+    //         itemName: snap.toJSON().itemName,
+    //         price: snap.toJSON().price,
+    //         itemImage: snap.toJSON().itemImage,
+    //         GST: snap.toJSON().GST,
+    //         category: snap.toJSON().category,
+    //         // location: snapshot.toJSON().location,
+    //         // CICode: snapshot.toJSON().CICode,
+    //       };
+    //       itemsList.push(obj);
+    //       this.setState({
+    //         // dataFetched: true,
+    //         myItems: itemsList,
+    //       });
+    //       this.arrayholder = itemsList;
+    //     });
+    //   });
     var myItemsRef = rootRef.child("myItems");
     var itemsRef = rootRef.child("items");
     var itemsList = [];
-
     myItemsRef.child(currentUserId).on("child_added", (snapshot) => {
       let itemRef = itemsRef.child(snapshot.key);
-      itemRef.once("value", (snap) => {
+      itemRef.on("value", (snap) => {
         var obj = {
           itemCode: snap.key,
           itemName: snap.toJSON().itemName,
@@ -48,7 +101,7 @@ export default class MyItems extends Component {
         };
         itemsList.push(obj);
         this.setState({
-          dataFetched: true,
+          // dataFetched: true,
           myItems: itemsList,
         });
         this.arrayholder = itemsList;
@@ -61,7 +114,6 @@ export default class MyItems extends Component {
   }
 
   searchFilterFunction = (text) => {
-    // console.log("$$$$$$$$$$$$$$");
     const newData = this.arrayholder.filter((item) => {
       const itemData = `${item.itemName.toUpperCase()}`;
       const textData = text.toUpperCase();
@@ -70,11 +122,39 @@ export default class MyItems extends Component {
     this.setState({ myItems: newData, search: text });
   };
 
+  shopsPickerItemsList = () => {
+    return this.state.myShops.map((shop, i) => {
+      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%   " + shop.shopId);
+      return (
+        <Picker.Item
+          label={shop.shopName}
+          key={shop.shopId}
+          value={shop.shopId}
+        />
+      );
+    });
+  };
+
+  onPickerValueChange = (value) => {
+    this.setState(
+      { selectedShop: value }
+      // () => {
+      // console.log(this.state.selectedShop);}
+    );
+  };
+
   render() {
     return (
       <View style={globalStyles.container}>
-        <ShopsPicker />
-        {/* <View style={globalStyles.line}></View> */}
+        <View style={globalStyles.picker}>
+          <Picker
+            selectedValue={this.state.selectedShop}
+            onValueChange={(value) => this.onPickerValueChange(value)}
+            mode="dropdown"
+          >
+            {this.shopsPickerItemsList()}
+          </Picker>
+        </View>
 
         <SearchBar
           placeholder="Type Here..."
@@ -85,7 +165,6 @@ export default class MyItems extends Component {
           containerStyle={globalStyles.searchBarContainer}
           inputContainerStyle={globalStyles.searchBarInputContainer}
         />
-        {/* <View style={globalStyles.line}></View> */}
         <FlatList
           keyExtractor={(item) => item.itemCode}
           data={this.state.myItems}

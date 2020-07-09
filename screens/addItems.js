@@ -105,7 +105,7 @@ export default class AddItems extends Component {
   };
 
   searchFilterFunction = (text) => {
-    console.log("@@@@@@@@@@@@");
+    // console.log("@@@@@@@@@@@@");
     const newData = this.arrayholder.filter((item) => {
       const itemData = `${item.itemName.toUpperCase()}`;
       const textData = text.toUpperCase();

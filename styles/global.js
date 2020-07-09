@@ -68,4 +68,11 @@ export const globalStyles = StyleSheet.create({
   searchBarInputContainer: {
     opacity: 0.7,
   },
+  picker: {
+    width: "100%",
+    // borderWidth: 1,
+  },
+  pickerItemStyle: {
+    textAlign: "center",
+  },
 });
