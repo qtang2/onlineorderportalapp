@@ -117,7 +117,7 @@ export default class AddItems extends Component {
   render() {
     return (
       <View style={globalStyles.container}>
-        <ShopsPicker />
+        {/* <ShopsPicker /> */}
         <SearchBar
           placeholder="Type Here..."
           lightTheme

@@ -17,7 +17,7 @@ class MyOrders extends Component {
   render() {
     return (
       <View style={globalStyles.container}>
-        <ShopsPicker />
+        {/* <ShopsPicker /> */}
         <View style={globalStyles.line}></View>
         <Text style={{ fontSize: 16 }}>Online Order</Text>
         <View style={globalStyles.line}></View>

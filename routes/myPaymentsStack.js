@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { createStackNavigator, HeaderTitle } from "@react-navigation/stack";
 import Header from "../shared/header";
 import MyPayments from "../screens/myPayments";
+import PaymentDetails from "../screens/paymentDetails";
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ class MyPaymentsStack extends Component {
             ),
           }}
         />
+        <Stack.Screen name="PaymentDetails" component={PaymentDetails} />
       </Stack.Navigator>
     );
   }

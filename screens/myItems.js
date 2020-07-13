@@ -30,7 +30,7 @@ export default class MyItems extends Component {
   }
 
   fetchData = () => {
-    console.log(this.state.selectedShop);
+    // console.log(this.state.selectedShop);
     var rootRef = firebase.database().ref();
     var currentUserId = firebase.auth().currentUser.uid;
 
@@ -55,9 +55,7 @@ export default class MyItems extends Component {
     // var myItemsRef = rootRef.child("myItems");
     // var itemsRef = rootRef.child("items");
     // var itemsList = [];
-    // console.log(
-    //   "selected shop id #######  " + this.state.selectedShop.toString()
-    // );
+    // console.log("selected shop id #######  " + typeof this.state.selectedShop);
     // myShopsRef
     //   .child(currentUserId)
     //   .child(this.state.selectedShop.toString())
@@ -96,8 +94,14 @@ export default class MyItems extends Component {
           itemImage: snap.toJSON().itemImage,
           GST: snap.toJSON().GST,
           category: snap.toJSON().category,
-          location: snapshot.toJSON().location,
-          CICode: snapshot.toJSON().CICode,
+          location:
+            snapshot.toJSON().location == null
+              ? "Empty"
+              : snapshot.toJSON().location,
+          CICode:
+            snapshot.toJSON().CICode == null
+              ? snap.key
+              : snapshot.toJSON().CICode,
         };
         itemsList.push(obj);
         this.setState({

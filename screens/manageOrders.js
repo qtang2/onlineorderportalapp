@@ -23,7 +23,7 @@ class ManageOrders extends Component {
   render() {
     return (
       <View style={globalStyles.container}>
-        <ShopsPicker />
+        {/* <ShopsPicker /> */}
         <View style={globalStyles.line}></View>
         <View style={styles.head}>
           <View style={styles.title}>
