@@ -27,7 +27,7 @@ export default class PaymentDetails extends Component {
       paymentMethod: "",
       status: "Open",
       note: "",
-      // currentShopName: this.props.navigation.getParam("currentShopName"),
+      currentShopName: this.props.route.params.currentShopName,
     };
   }
   componentDidMount() {
@@ -61,6 +61,7 @@ export default class PaymentDetails extends Component {
         .database()
         .ref("/myPayments")
         .child(currentUser.uid)
+        .child(this.state.currentShopName)
         .child(this.state.paymentNo)
         .set({
           allocatedAmount: this.state.allocatedAmount,
@@ -91,9 +92,7 @@ export default class PaymentDetails extends Component {
     return (
       <View style={globalStyles.container}>
         <View style={styles.shop}>
-          <Text style={styles.shopText}>
-            {this.props.route.params.currentShopName}
-          </Text>
+          <Text style={styles.shopText}>{this.state.currentShopName}</Text>
           <View style={globalStyles.line}></View>
         </View>
 
