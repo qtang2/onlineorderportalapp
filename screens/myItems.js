@@ -50,37 +50,6 @@ export default class MyItems extends Component {
         myShops: shopsList,
       });
     });
-
-    // Get all the items of this user of this shop
-    // var myItemsRef = rootRef.child("myItems");
-    // var itemsRef = rootRef.child("items");
-    // var itemsList = [];
-    // console.log("selected shop id #######  " + typeof this.state.selectedShop);
-    // myShopsRef
-    //   .child(currentUserId)
-    //   .child(this.state.selectedShop.toString())
-    //   .on("child_added", (snapshot) => {
-    //     console.log("snaaaaaaaaaap shot key     " + snapshot.key);
-    //     let itemRef = itemsRef.child(snapshot.key);
-    //     itemRef.once("value", (snap) => {
-    //       var obj = {
-    //         itemCode: snap.key,
-    //         itemName: snap.toJSON().itemName,
-    //         price: snap.toJSON().price,
-    //         itemImage: snap.toJSON().itemImage,
-    //         GST: snap.toJSON().GST,
-    //         category: snap.toJSON().category,
-    //         // location: snapshot.toJSON().location,
-    //         // CICode: snapshot.toJSON().CICode,
-    //       };
-    //       itemsList.push(obj);
-    //       this.setState({
-    //         // dataFetched: true,
-    //         myItems: itemsList,
-    //       });
-    //       this.arrayholder = itemsList;
-    //     });
-    //   });
     var myItemsRef = rootRef.child("myItems");
     var itemsRef = rootRef.child("items");
     var itemsList = [];
@@ -105,7 +74,7 @@ export default class MyItems extends Component {
         };
         itemsList.push(obj);
         this.setState({
-          // dataFetched: true,
+          dataFetched: true,
           myItems: itemsList,
         });
         this.arrayholder = itemsList;

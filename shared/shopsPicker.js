@@ -43,17 +43,17 @@ export default class ShopsPicker extends Component {
         <Picker.Item
           label={shop.shopName}
           key={shop.shopId}
-          value={shop.shopName}
+          value={shop.shopId}
         />
       );
     });
   };
 
-  updateCurrentValue = (shopName) => {
-    this.setState({ selectedShop: shopName });
-    // console.log("value changedddddddddddd&&&&&&&&&&&&&&&&&&&&&& " + shopName);
+  updateCurrentValue = (shopId) => {
+    this.setState({ selectedShop: shopId });
+    // console.log("value changedddddddddddd&&&&&&&&&&&&&&&&&&&&&& " + shopId);
     // console.log(this.props.getCurrent);
-    this.props.onChange(shopName);
+    this.props.onChange(shopId);
   };
 
   render() {
@@ -62,8 +62,8 @@ export default class ShopsPicker extends Component {
         <Picker
           selectedValue={this.state.selectedShop}
           // onValueChange={(value) => this.setState({ selectedShop: value })}
-          onValueChange={(shopName) => {
-            this.updateCurrentValue(shopName);
+          onValueChange={(shopId) => {
+            this.updateCurrentValue(shopId);
           }}
           mode="dropdown"
         >

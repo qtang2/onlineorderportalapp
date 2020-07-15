@@ -1,15 +1,5 @@
 import React, { useState, Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Alert,
-  Picker,
-  Image,
-  TextInput,
-} from "react-native";
-import ConfirmButton from "../shared/confirmButton";
-import { Table, Row, Rows } from "react-native-table-component";
+import { StyleSheet, View, Text, Alert, TextInput } from "react-native";
 import { globalStyles } from "../styles/global";
 import PaymentMethodsPicker from "../shared/paymentMethodsPicker";
 import ResetButton from "../shared/resetButton";
@@ -18,7 +8,8 @@ import firebase from "../database/firebase";
 export default class PaymentDetails extends Component {
   constructor(props) {
     super(props);
-    // console.log(props.route.params.currentShopName);
+    // console.log("&&&&&&&&&&&&&&&&&");
+    // console.log(props.route.params.currentShop);
     this.state = {
       paymentNo: "",
       paymentAmount: "0.0",
@@ -27,12 +18,14 @@ export default class PaymentDetails extends Component {
       paymentMethod: "",
       status: "Open",
       note: "",
-      currentShopName: this.props.route.params.currentShopName,
+      currentShopId: props.route.params.currentShop.currentShopId,
+      currentShopName: props.route.params.currentShop.currentShopName,
     };
   }
   componentDidMount() {
     this.createPaymentNo();
     this.createTransactionDate();
+    // this.getCurrentShopName();
     // console.log(this.state);
   }
 
@@ -50,9 +43,9 @@ export default class PaymentDetails extends Component {
 
     // console.log("create payment Date  " + tranDate);
     this.setState({ transactionDate: tranDate });
+    // console.log(date);
   };
 
-  //TODO : upload data to firebase
   savePressHandler = () => {
     var currentUser = firebase.auth().currentUser;
     if (currentUser) {
@@ -61,7 +54,7 @@ export default class PaymentDetails extends Component {
         .database()
         .ref("/myPayments")
         .child(currentUser.uid)
-        .child(this.state.currentShopName)
+        .child(this.state.currentShopId)
         .child(this.state.paymentNo)
         .set({
           allocatedAmount: this.state.allocatedAmount,
@@ -88,7 +81,8 @@ export default class PaymentDetails extends Component {
   };
 
   render() {
-    const state = this.state;
+    // const state = this.state;
+    // console.log(this.state);
     return (
       <View style={globalStyles.container}>
         <View style={styles.shop}>

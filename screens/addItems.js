@@ -44,9 +44,7 @@ export default class AddItems extends Component {
             GST: child.toJSON().GST,
             category: child.toJSON().category,
             price: child.toJSON().price,
-            //add two more props for selection
             isSelected: false,
-            // isSelectedClass: styles.list,
           });
         });
         this.setState({
@@ -86,6 +84,7 @@ export default class AddItems extends Component {
     var currentUser = firebase.auth().currentUser;
     if (currentUser) {
       let renderItems = [...this.state.items];
+      //TODO: need to handle if a user select nothing
       for (let item of renderItems) {
         if (item.isSelected == true) {
           firebase

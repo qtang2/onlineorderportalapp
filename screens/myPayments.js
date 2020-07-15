@@ -12,9 +12,9 @@ import {
 import { globalStyles } from "../styles/global";
 import { SearchBar } from "react-native-elements";
 import firebase from "../database/firebase";
-import PaymentMethodsPicker from "../shared/paymentMethodsPicker";
 import ResetButton from "../shared/resetButton";
 import ShopsPicker from "../shared/shopsPicker";
+import Payment from "../components/payment";
 
 export default class MyPayments extends Component {
   constructor(props) {
@@ -23,38 +23,88 @@ export default class MyPayments extends Component {
       dataFetched: false,
       myPayments: [],
       search: "",
-      currentShopName: "",
-      // myShops: [],
-      // selectedShop: "",
+      currentShopId: "",
+      // currentShopName: ""
+      search: "",
     };
     this.arrayholder = []; // For search function
     // this.onChange = this.onChange.bind(this);
   }
 
   searchFilterFunction = (text) => {
-    // const newData = this.arrayholder.filter((item) => {
-    //   const itemData = `${item.itemName.toUpperCase()}`;
-    //   const textData = text.toUpperCase();
-    //   return itemData.indexOf(textData) > -1;
-    // });
-    // this.setState({ myItems: newData, search: text });
-    console.log("payments search");
+    const newData = this.arrayholder.filter((item) => {
+      const itemData = `${item.paymentId.toUpperCase()}`;
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({ myPayments: newData, search: text });
+    // console.log("payments search");
+  };
+
+  fetchPaymentsData = (shopId) => {
+    var rootRef = firebase.database().ref();
+    var currentUserId = firebase.auth().currentUser.uid;
+    var myPaymentsRef = rootRef.child("myPayments");
+    var paymentsList = [];
+    myPaymentsRef
+      .child(currentUserId)
+      .child(shopId)
+      .on("child_added", (snapshot) => {
+        var paymentObj = {
+          paymentId: snapshot.key,
+          paymentAmount: snapshot.toJSON().paymentAmount,
+          allocatedAmount: snapshot.toJSON().allocatedAmount,
+          paymentMethod: snapshot.toJSON().paymentMethod,
+          status: snapshot.toJSON().status,
+          note:
+            snapshot.toJSON().note == ""
+              ? "Empty note"
+              : snapshot.toJSON().note,
+          transactionDate: snapshot.toJSON().transactionDate,
+          createdBy: firebase.auth().currentUser.email,
+          createdDate: snapshot.toJSON().transactionDate, //TODO need to modify when figure out where to get transactionDate
+        };
+        paymentsList.push(paymentObj);
+        this.setState({
+          dataFetched: true,
+          myPayments: paymentsList,
+        });
+        this.arrayholder = paymentsList;
+      });
   };
 
   addNewPayment = () => {
-    this.props.navigation.navigate("PaymentDetails", {
-      currentShopName: this.state.currentShopName,
-    });
-    // console.log("current shop name   " + this.state.currentShopName);
+    var currentShopName = "";
+    var currentUser = firebase.auth().currentUser;
+    if (currentUser) {
+      firebase
+        .database()
+        .ref("/shops")
+        .child(this.state.currentShopId)
+        .once("value", (snapshot) => {
+          currentShopName = snapshot.toJSON().shopName;
+          var shopObj = {
+            currentShopId: this.state.currentShopId,
+            currentShopName: currentShopName,
+          };
+          this.props.navigation.navigate("PaymentDetails", {
+            currentShop: shopObj,
+          });
+        });
+    } else {
+      console.log("no such a user");
+    }
   };
 
-  getCurrentShop = (shopName) => {
-    // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&& current pick  " + shopName);
-    this.setState({ currentShopName: shopName });
-    // console.log();
+  //When get shop Id, then get the payments under this shop
+  getCurrentShop = (shopId) => {
+    this.setState({ currentShopId: shopId });
+    // console.log(shopId + "   **************************");
+    this.fetchPaymentsData(shopId);
   };
 
   render() {
+    console.log(this.state.myPayments);
     return (
       <View style={globalStyles.container}>
         <ShopsPicker
@@ -72,20 +122,26 @@ export default class MyPayments extends Component {
           inputContainerStyle={globalStyles.searchBarInputContainer}
         />
         <FlatList
-        // keyExtractor={(item) => item.itemCode}
-        // data={this.state.myItems}
-        // renderItem={({ item }) => (
-        //   <Item
-        //     itemCode={item.itemCode}
-        //     itemName={item.itemName}
-        //     price={item.price}
-        //     itemImage={item.itemImage}
-        //     GST={item.GST}
-        //     category={item.category}
-        //     location={item.location}
-        //     CICode={item.CICode}
-        //   />
-        // )}
+          keyExtractor={(payment) => payment.paymentId}
+          data={this.state.myPayments}
+          renderItem={({ item }) => {
+            console.log("pppppppppppppppppppppppppp");
+            console.log(item.paymentId);
+            return (
+              <Payment
+                paymentId={item.paymentId}
+                allocatedAmount={item.allocatedAmount}
+                createdBy={item.createdBy}
+                createdDate={item.createdDate}
+                note={item.note}
+                paymentAmount={item.paymentAmount}
+                paymentMethod={item.paymentMethod}
+                status={item.status}
+                transactionDate={item.transactionDate}
+              />
+            );
+            // }
+          }}
         />
         <ResetButton text="New" onPress={this.addNewPayment} />
       </View>
