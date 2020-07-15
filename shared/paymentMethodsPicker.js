@@ -86,5 +86,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderWidth: 1,
     height: "100%",
+    borderColor: "#ddd",
   },
 });

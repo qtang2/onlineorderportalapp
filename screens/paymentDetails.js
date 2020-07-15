@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   methodsPicker: {
     flexDirection: "column",
     flex: 2,
-    backgroundColor: "pink",
+    // backgroundColor: "pink",
     height: 35,
   },
   orderInfoRow: {

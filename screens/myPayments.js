@@ -31,6 +31,7 @@ export default class MyPayments extends Component {
     // this.onChange = this.onChange.bind(this);
   }
 
+  //Only can search based on transaction number
   searchFilterFunction = (text) => {
     const newData = this.arrayholder.filter((item) => {
       const itemData = `${item.paymentId.toUpperCase()}`;
@@ -38,7 +39,6 @@ export default class MyPayments extends Component {
       return itemData.indexOf(textData) > -1;
     });
     this.setState({ myPayments: newData, search: text });
-    // console.log("payments search");
   };
 
   fetchPaymentsData = (shopId) => {
@@ -99,12 +99,11 @@ export default class MyPayments extends Component {
   //When get shop Id, then get the payments under this shop
   getCurrentShop = (shopId) => {
     this.setState({ currentShopId: shopId });
-    // console.log(shopId + "   **************************");
     this.fetchPaymentsData(shopId);
   };
 
   render() {
-    console.log(this.state.myPayments);
+    // console.log(this.state.myPayments);
     return (
       <View style={globalStyles.container}>
         <ShopsPicker
@@ -125,8 +124,6 @@ export default class MyPayments extends Component {
           keyExtractor={(payment) => payment.paymentId}
           data={this.state.myPayments}
           renderItem={({ item }) => {
-            console.log("pppppppppppppppppppppppppp");
-            console.log(item.paymentId);
             return (
               <Payment
                 paymentId={item.paymentId}

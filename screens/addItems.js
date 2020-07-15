@@ -26,6 +26,7 @@ export default class AddItems extends Component {
       items: [],
       isSelectedItem: null,
       search: "",
+      currentShopId: "",
     };
     this.arrayholder = [];
   }
@@ -79,9 +80,9 @@ export default class AddItems extends Component {
     this.setState({ renderItems });
   };
 
-  //TODO: need to handle repeated selections
   addSelections = () => {
     var currentUser = firebase.auth().currentUser;
+
     if (currentUser) {
       let renderItems = [...this.state.items];
       //TODO: need to handle if a user select nothing
@@ -91,12 +92,14 @@ export default class AddItems extends Component {
             .database()
             .ref("/myItems")
             .child(currentUser.uid)
+            .child(this.state.currentShopId)
             .child(item.itemCode)
             .set({
               itemName: item.itemName,
             });
+          alert("Add successfully!");
         }
-        alert("Add successfully!");
+        alert("Nothing selected!");
       }
     } else {
       console.log("no such a user");
@@ -104,7 +107,6 @@ export default class AddItems extends Component {
   };
 
   searchFilterFunction = (text) => {
-    // console.log("@@@@@@@@@@@@");
     const newData = this.arrayholder.filter((item) => {
       const itemData = `${item.itemName.toUpperCase()}`;
       const textData = text.toUpperCase();
@@ -113,10 +115,18 @@ export default class AddItems extends Component {
     this.setState({ items: newData, search: text });
   };
 
+  getCurrentShop = (shopId) => {
+    this.setState({ currentShopId: shopId });
+  };
+
   render() {
     return (
       <View style={globalStyles.container}>
-        {/* <ShopsPicker /> */}
+        <ShopsPicker
+          onChange={(e) => {
+            this.getCurrentShop(e);
+          }}
+        />
         <SearchBar
           placeholder="Type Here..."
           lightTheme
