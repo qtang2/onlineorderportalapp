@@ -51,8 +51,6 @@ export default class ShopsPicker extends Component {
 
   updateCurrentValue = (shopId) => {
     this.setState({ selectedShop: shopId });
-    // console.log("value changedddddddddddd&&&&&&&&&&&&&&&&&&&&&& " + shopId);
-    // console.log(this.props.getCurrent);
     this.props.onChange(shopId);
   };
 

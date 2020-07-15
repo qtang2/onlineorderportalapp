@@ -140,6 +140,11 @@ export default class MyItems extends Component {
     this.fetchItemsData(shopId);
   };
 
+  getChangedCICode = (newCICode) => {
+    console.log("changegedddddddddddddddddddddddddd   " + newCICode);
+    //TODO: changed state to update the new CICode
+  };
+
   render() {
     return (
       <View style={globalStyles.container}>
@@ -171,6 +176,7 @@ export default class MyItems extends Component {
               category={item.category}
               location={item.location}
               CICode={item.CICode}
+              onChangeCICode={(newCICode) => this.getChangedCICode(newCICode)}
             />
           )}
         />

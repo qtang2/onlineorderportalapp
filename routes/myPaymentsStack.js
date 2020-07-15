@@ -19,7 +19,11 @@ class MyPaymentsStack extends Component {
             ),
           }}
         />
-        <Stack.Screen name="PaymentDetails" component={PaymentDetails} />
+        <Stack.Screen
+          name="PaymentDetails"
+          component={PaymentDetails}
+          options={{ title: "Payment Details" }}
+        />
       </Stack.Navigator>
     );
   }

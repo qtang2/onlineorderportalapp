@@ -8,8 +8,6 @@ import firebase from "../database/firebase";
 export default class PaymentDetails extends Component {
   constructor(props) {
     super(props);
-    // console.log("&&&&&&&&&&&&&&&&&");
-    // console.log(props.route.params.currentShop);
     this.state = {
       paymentNo: "",
       paymentAmount: "0.0",
@@ -25,8 +23,6 @@ export default class PaymentDetails extends Component {
   componentDidMount() {
     this.createPaymentNo();
     this.createTransactionDate();
-    // this.getCurrentShopName();
-    // console.log(this.state);
   }
 
   createPaymentNo = () => {
@@ -40,10 +36,7 @@ export default class PaymentDetails extends Component {
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     var tranDate = date + "-" + month + "-" + year;
-
-    // console.log("create payment Date  " + tranDate);
     this.setState({ transactionDate: tranDate });
-    // console.log(date);
   };
 
   savePressHandler = () => {
@@ -87,26 +80,26 @@ export default class PaymentDetails extends Component {
       <View style={globalStyles.container}>
         <View style={styles.shop}>
           <Text style={styles.shopText}>{this.state.currentShopName}</Text>
-          <View style={globalStyles.line}></View>
         </View>
+        <View style={globalStyles.line}></View>
 
         <View style={styles.paymentInfoContainer}>
-          <View style={styles.orderInfoRow}>
-            <View style={styles.orderInfoRowLeft}>
+          <View style={styles.paymentInfoRow}>
+            <View style={styles.paymentInfoRowLeft}>
               <Text style={styles.infoTextLeft}>Payment No. </Text>
             </View>
 
-            <View style={styles.orderInfoRowRight}>
+            <View style={styles.paymentInfoRowRight}>
               <Text style={styles.infoTextRight}>{this.state.paymentNo}</Text>
             </View>
           </View>
 
-          <View style={styles.orderInfoRow}>
-            <View style={styles.orderInfoRowLeft}>
+          <View style={styles.paymentInfoRow}>
+            <View style={styles.paymentInfoRowLeft}>
               <Text style={styles.infoTextLeft}>Payment Amount</Text>
             </View>
 
-            <View style={styles.orderInfoRowRight}>
+            <View style={styles.paymentInfoRowRight}>
               <TextInput
                 placeholder="0.0"
                 value={this.state.paymentAmount}
@@ -118,60 +111,62 @@ export default class PaymentDetails extends Component {
             </View>
           </View>
 
-          <View style={styles.orderInfoRow}>
-            <View style={styles.orderInfoRowLeft}>
+          <View style={styles.paymentInfoRow}>
+            <View style={styles.paymentInfoRowLeft}>
               <Text style={styles.infoTextLeft}>Allocated Amount</Text>
             </View>
 
-            <View style={styles.orderInfoRowRight}>
+            <View style={styles.paymentInfoRowRight}>
               <Text style={styles.infoTextRight}>
                 {this.state.allocatedAmount}{" "}
               </Text>
             </View>
           </View>
 
-          <View style={styles.orderInfoRow}>
-            <View style={styles.orderInfoRowLeft}>
+          <View style={styles.paymentInfoRow}>
+            <View style={styles.paymentInfoRowLeft}>
               <Text style={styles.infoTextLeft}>Transaction Date</Text>
             </View>
 
-            <View style={styles.orderInfoRowRight}>
+            <View style={styles.paymentInfoRowRight}>
               <Text style={styles.infoTextRight}>
                 {this.state.transactionDate}
               </Text>
             </View>
           </View>
 
-          <View style={styles.orderInfoRow}>
-            <View style={styles.orderInfoRowLeft}>
+          <View style={styles.paymentInfoRow}>
+            <View style={styles.paymentInfoRowLeft}>
               <Text style={styles.infoTextLeft}>Payment Method</Text>
             </View>
 
-            <View style={styles.methodsPicker}>
-              <PaymentMethodsPicker
-                onChange={(e) => {
-                  this.getCurrentPaymentMethod(e);
-                }}
-              />
+            <View style={styles.paymentInfoRowRight}>
+              <View style={styles.methodsPicker}>
+                <PaymentMethodsPicker
+                  onChange={(e) => {
+                    this.getCurrentPaymentMethod(e);
+                  }}
+                />
+              </View>
             </View>
           </View>
 
-          <View style={styles.orderInfoRow}>
-            <View style={styles.orderInfoRowLeft}>
+          <View style={styles.paymentInfoRow}>
+            <View style={styles.paymentInfoRowLeft}>
               <Text style={styles.infoTextLeft}> Status </Text>
             </View>
 
-            <View style={styles.orderInfoRowRight}>
+            <View style={styles.paymentInfoRowRight}>
               <Text style={styles.infoTextRight}>{this.state.status}</Text>
             </View>
           </View>
 
-          <View style={styles.orderInfoNoteRow}>
-            <View style={styles.orderInfoRowLeft}>
+          <View style={styles.paymentInfoNoteRow}>
+            <View style={styles.paymentInfoRowLeft}>
               <Text style={styles.infoTextLeft}> Note </Text>
             </View>
 
-            <View style={styles.orderInfoRowRight}>
+            <View style={styles.paymentInfoRowRight}>
               <TextInput
                 style={styles.noteInput}
                 multiline
@@ -181,6 +176,7 @@ export default class PaymentDetails extends Component {
             </View>
           </View>
         </View>
+
         <ResetButton text="Save" onPress={this.savePressHandler} />
       </View>
     );
@@ -189,22 +185,22 @@ export default class PaymentDetails extends Component {
 
 const styles = StyleSheet.create({
   methodsPicker: {
-    flexDirection: "column",
-    flex: 2,
+    // flexDirection: "column",
+    // flex: 2,
     // backgroundColor: "pink",
-    height: 35,
+    height: 40,
   },
-  orderInfoRow: {
+  paymentInfoRow: {
     flexDirection: "row",
     flex: 1,
   },
-  orderInfoNoteRow: {
+  paymentInfoNoteRow: {
     flexDirection: "row",
     flex: 3,
   },
-  orderInfoRowLeft: {
+  paymentInfoRowLeft: {
     flexDirection: "column",
-    flex: 1.5,
+    flex: 2,
     // borderWidth: 1,
     // borderColor: "green",
   },
@@ -216,8 +212,8 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   shop: {
-    flex: 0.5,
     flexDirection: "column",
+    // borderWidth: 1,
   },
   shopText: {
     fontSize: 16,
@@ -227,25 +223,23 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: "column",
     alignItems: "center",
-  },
-  orderInfo: {
-    flex: 2,
-    flexDirection: "row",
-    alignItems: "center",
+    marginTop: 20,
+    // borderWidth: 1,
   },
   infoTextLeft: {
     textAlign: "center",
-    fontSize: 15,
+    fontSize: 14,
     // marginVertical: 7,
     alignSelf: "flex-start",
   },
   infoTextRight: {
     borderWidth: 1,
     borderColor: "#ddd",
-    width: 180,
+    width: "100%",
     textAlign: "center",
     fontSize: 15,
     alignSelf: "flex-end",
+    // backgroundColor: "pink",
   },
   noteInfo: {
     flex: 1,
