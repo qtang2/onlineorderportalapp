@@ -1,14 +1,24 @@
 import React, { useState, Component } from "react";
-import { StyleSheet, View, Text, Image, Modal, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Modal,
+  TextInput,
+  Alert,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
+import firebase from "../database/firebase";
 
 export default class Item extends Component {
   constructor(props) {
     super(props);
     // console.log(props);
     this.state = {
-      openModal: false,
+      openCICodeModal: false,
+      openLocationModal: false,
       CICode: "",
       location: "",
     };
@@ -16,20 +26,82 @@ export default class Item extends Component {
 
   changeCICode = () => {
     this.setState({
-      openModal: true,
+      openCICodeModal: true,
     });
   };
-
-  closeModal = () => {
+  changeLocation = () => {
     this.setState({
-      openModal: false,
+      openLocationModal: true,
     });
   };
 
-  saveChangedCICode = () => {
-    console.log("****************      " + this.state.CICode);
-    this.props.onChangeCICode(this.state.CICode);
+  closeCICodeModal = () => {
+    this.setState({
+      openCICodeModal: false,
+    });
   };
+  closeLocationModal = () => {
+    this.setState({
+      openLocationModal: false,
+    });
+  };
+
+  saveChangedCICode = (e) => {
+    var rootRef = firebase.database().ref();
+    var currentUserId = firebase.auth().currentUser.uid;
+    var myItemsRef = rootRef.child("myItems");
+    var newCICode = this.state.CICode;
+    // console.log(newCICode);
+    if (newCICode != "") {
+      myItemsRef
+        .child(currentUserId)
+        .child(this.props.currentShopId)
+        .child(this.props.itemCode)
+        .update({
+          CICode: this.state.CICode,
+        });
+      this.props.onChangeCICode(newCICode);
+      Alert.alert("", "Your C.I.Code changed successfully", [
+        { text: "Close", onPress: () => this.closeCICodeModal() },
+      ]);
+
+      this.setState({
+        CICode: "",
+      });
+    } else {
+      alert("Please input your CICode!");
+    }
+  };
+
+  saveChangedLocation = (e) => {
+    // console.log("****************      " + e);
+
+    var rootRef = firebase.database().ref();
+    var currentUserId = firebase.auth().currentUser.uid;
+    var myItemsRef = rootRef.child("myItems");
+    var newLocation = this.state.location;
+    console.log(newLocation);
+    if (newLocation != "") {
+      myItemsRef
+        .child(currentUserId)
+        .child(this.props.currentShopId)
+        .child(this.props.itemCode)
+        .update({
+          location: newLocation,
+        });
+      this.props.onChangeLocation(newLocation);
+      Alert.alert("", "Your item location changed successfully", [
+        { text: "Close", onPress: () => this.closeLocationModal() },
+      ]);
+
+      this.setState({
+        location: "",
+      });
+    } else {
+      alert("Please input your item location!");
+    }
+  };
+
   render() {
     return (
       <View style={styles.itemRow}>
@@ -51,7 +123,7 @@ export default class Item extends Component {
 
           <Modal
             transparent={true}
-            visible={this.state.openModal}
+            visible={this.state.openCICodeModal}
             // style={{ flexDirection: "row", alignSelf: "center" }}
           >
             <View style={styles.modal}>
@@ -68,19 +140,58 @@ export default class Item extends Component {
                 />
                 <TouchableOpacity>
                   <View style={styles.saveButton}>
-                    <Icon name="done" onPress={this.saveChangedCICode} />
+                    <Icon
+                      name="done"
+                      onPress={(newCICode) => this.saveChangedCICode(newCICode)}
+                    />
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity>
                   <View style={styles.closeButton}>
-                    <Icon name="close" onPress={this.closeModal} />
+                    <Icon name="close" onPress={this.closeCICodeModal} />
                   </View>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
 
-          <Text style={styles.itemText}>Location: {this.props.location}</Text>
+          <TouchableOpacity onPress={this.changeLocation}>
+            <Text style={styles.itemText}>Location: {this.props.location}</Text>
+          </TouchableOpacity>
+
+          <Modal
+            transparent={true}
+            visible={this.state.openLocationModal}
+            // style={{ flexDirection: "row", alignSelf: "center" }}
+          >
+            <View style={styles.modal}>
+              <View style={styles.modalHead}>
+                <Text style={styles.modalHeadText}>Enter Item Location:</Text>
+              </View>
+              <View style={styles.changeRow}>
+                <TextInput
+                  placeholder={this.props.location}
+                  style={styles.input}
+                  onChangeText={(location) => this.setState({ location })}
+                />
+                <TouchableOpacity>
+                  <View style={styles.saveButton}>
+                    <Icon
+                      name="done"
+                      onPress={(newLocation) =>
+                        this.saveChangedLocation(newLocation)
+                      }
+                    />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <View style={styles.closeButton}>
+                    <Icon name="close" onPress={this.closeLocationModal} />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </View>
         {/* <View style={styles.cardContent}>{props.children}</View> */}
       </View>
