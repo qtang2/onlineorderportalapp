@@ -15,7 +15,7 @@ import firebase from "../database/firebase";
 export default class Item extends Component {
   constructor(props) {
     super(props);
-    // console.log(props);
+    console.log(props);
     this.state = {
       openCICodeModal: false,
       openLocationModal: false,
@@ -117,8 +117,10 @@ export default class Item extends Component {
           <Text style={styles.itemText}>
             $ {this.props.price}, GST: {this.props.GST}
           </Text>
-          <TouchableOpacity onPress={this.changeCICode}>
-            <Text style={styles.itemText}>C.I. Code: {this.props.CICode}</Text>
+          <TouchableOpacity onLongPress={this.changeCICode}>
+            <Text style={styles.changableItemText}>
+              C.I. Code: {this.props.CICode}
+            </Text>
           </TouchableOpacity>
 
           <Modal
@@ -155,8 +157,10 @@ export default class Item extends Component {
             </View>
           </Modal>
 
-          <TouchableOpacity onPress={this.changeLocation}>
-            <Text style={styles.itemText}>Location: {this.props.location}</Text>
+          <TouchableOpacity onLongPress={this.changeLocation}>
+            <Text style={styles.changableItemText}>
+              Location: {this.props.location}
+            </Text>
           </TouchableOpacity>
 
           <Modal
@@ -203,12 +207,12 @@ const styles = StyleSheet.create({
   modalHeadText: {
     fontSize: 17,
   },
-
   input: {
     flex: 3,
     borderWidth: 1,
     borderRadius: 2,
     marginHorizontal: 10,
+    borderColor: "#d4d4d9",
   },
   buttonText: {
     color: "#F1FFEF",
@@ -237,22 +241,24 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: "#ffffff",
-    height: "18%",
     width: "80%",
     borderRadius: 10,
     borderWidth: 1,
+    borderColor: "#d4d4d9",
     alignItems: "center",
     alignSelf: "center",
     marginTop: 100,
+    // opacity: 0.7,
   },
   modalHead: {
     // backgroundColor: "gray",
     borderBottomWidth: 1,
     borderColor: "#d4d4d9",
-    marginVertical: 20,
+    marginVertical: 15,
   },
   changeRow: {
     flexDirection: "row",
+    marginVertical: 15,
   },
   itemText: {
     borderBottomWidth: 1,
@@ -260,6 +266,12 @@ const styles = StyleSheet.create({
     // alignSelf: "center",
     marginVertical: 5,
     // paddingVertical: 10,
+  },
+  changableItemText: {
+    color: "#1A82C3",
+    borderBottomWidth: 1,
+    borderColor: "#d4d4d9",
+    marginVertical: 5,
   },
   image: {
     width: 50,

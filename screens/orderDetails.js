@@ -18,7 +18,7 @@ import Invoice from "../screens/invoice";
 
 export default class OrderDetails extends Component {
   constructor(props) {
-    super(props);
+    // super(props);
     this.state = {
       tableHead: ["Img", "Qty", "Name", "Price", "Amount", "GST", "Total"],
       widthArr: [80, 80, 80, 80, 80, 80, 80],

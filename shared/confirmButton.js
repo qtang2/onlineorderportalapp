@@ -27,5 +27,6 @@ const styles = StyleSheet.create({
     height: 30,
     textAlign: "center",
     opacity: 0.8,
+    // position: "absolute",
   },
 });
