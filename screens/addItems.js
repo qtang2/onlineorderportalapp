@@ -7,6 +7,7 @@ import {
   Button,
   Alert,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import firebase from "../database/firebase";
 import { globalStyles } from "../styles/global";
@@ -121,7 +122,10 @@ export default class AddItems extends Component {
 
   render() {
     return (
-      <View style={globalStyles.container}>
+      <KeyboardAvoidingView
+        style={globalStyles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
         <ShopsPicker
           onChange={(e) => {
             this.getCurrentShop(e);
@@ -196,7 +200,7 @@ export default class AddItems extends Component {
           <ResetButton text="Reset" onPress={this.resetSelections} />
           <ConfirmButton text="Add" onPress={this.addSelections} />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

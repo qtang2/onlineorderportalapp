@@ -1,9 +1,17 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Image, TextInput, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TextInput,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
 import firebase from "../database/firebase";
 import { Icon } from "react-native-elements";
 
-export default class OrderItem extends Component {
+export default class PurchasedItem extends Component {
   constructor(props) {
     super(props);
     // console.log("orderitem propssssssssssssssssssss");
@@ -14,24 +22,12 @@ export default class OrderItem extends Component {
     };
   }
 
-  changeQuatity(quatity) {
-    this.setState({ quatity: quatity });
-    this.props.onChangeQuatity(
-      this.props.itemCode,
-      quatity,
-      this.props.price,
-      this.props.GST
-    );
-    var amount = this.props.price * quatity;
-    this.setState({
-      amount: amount,
-    });
-    // console.log(quatity);
-  }
-
   render() {
     return (
-      <View style={styles.itemRow}>
+      <KeyboardAvoidingView
+        style={styles.itemRow}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
         <View style={styles.leftContainer}>
           <Image
             source={require("../assets/coffeecup.png")}
@@ -44,28 +40,14 @@ export default class OrderItem extends Component {
         <View style={styles.rightContainer}>
           <Text style={styles.itemText}>{this.props.itemName}</Text>
           <Text style={styles.itemText}>
-            $ {this.props.price} , GST: {this.props.GST}
+            Qty: {this.props.quatity} , $ {this.props.price}
           </Text>
-          <View style={styles.quatityContainer}>
-            {/* <Icon
-              name="remove"
-              onPress={this.reduceQuatity}
-              style={styles.icon}
-            /> */}
-            <TextInput
-              placeholder="0"
-              keyboardType="numeric"
-              style={styles.input}
-              onChangeText={(quatity) => this.changeQuatity(quatity)}
-            />
-            {/* <Icon name="add" onPress={this.addQuatity} style={styles.icon} /> */}
-            <Text style={styles.amountText}>
-              {" "}
-              = $ {this.props.price * this.props.quatity}
-            </Text>
-          </View>
+          <Text style={styles.itemText}>
+            Amount: {this.props.price * this.props.quatity} , GST:{" "}
+            {this.props.GST * this.props.quatity}
+          </Text>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -79,13 +61,7 @@ const styles = StyleSheet.create({
   quatityContainer: {
     flexDirection: "row",
   },
-  input: {
-    flex: 1.5,
-    borderWidth: 1,
-    borderRadius: 2,
-    // marginHorizontal: 10,
-    borderColor: "grey",
-  },
+
   amountText: {
     flex: 3,
     marginHorizontal: 6,

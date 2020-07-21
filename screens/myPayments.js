@@ -62,7 +62,7 @@ export default class MyPayments extends Component {
               : snapshot.toJSON().note,
           transactionDate: snapshot.toJSON().transactionDate,
           createdBy: firebase.auth().currentUser.email,
-          createdDate: snapshot.toJSON().transactionDate, //TODO need to modify when figure out where to get transactionDate
+          createdDate: snapshot.toJSON().transactionDate,
         };
         paymentsList.push(paymentObj);
         this.setState({
