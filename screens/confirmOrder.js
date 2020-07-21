@@ -12,6 +12,8 @@ import {
 import ConfirmButton from "../shared/confirmButton";
 import { globalStyles } from "../styles/global";
 import PurchasedItem from "../components/purchasedItem";
+import DatePicker from "react-native-datepicker";
+import firebase from "../database/firebase";
 
 export default class ConfirmOrder extends Component {
   constructor(props) {
@@ -21,7 +23,7 @@ export default class ConfirmOrder extends Component {
       purchasedNo: this.props.route.params.purchasedNo,
       orderDate: this.props.route.params.orderDate,
       deliverAddress: "",
-      requestDeliverDate: "",
+      requestDeliverDate: this.props.route.params.orderDate,
       note: "",
       currentShopId: this.props.route.params.currentShop.currentShopId,
       currentShopName: this.props.route.params.currentShop.currentShopName,
@@ -35,7 +37,41 @@ export default class ConfirmOrder extends Component {
     //     onPress: () => this.props.navigation.navigate("MyOrders"),
     //   },
     // ]);
-    console.log(this.state.deliverAddress);
+    // console.log(this.state.deliverAddress);
+    var currentUser = firebase.auth().currentUser;
+    console.log(
+      currentUser.uid +
+        "   " +
+        this.state.currentShopId +
+        "    " +
+        this.state.purchasedNo
+    );
+    if (currentUser) {
+      console.log(this.state);
+      firebase
+        .database()
+        .ref("/myOrders")
+        .child(currentUser.uid)
+        .child(this.state.currentShopId)
+        .child(this.state.purchasedNo)
+        .set({
+          // purchasedItems: this.state.purchasedItems,
+          orderDate: this.state.orderDate,
+          deliverAddress: this.state.deliverAddress,
+          requestDeliverDate: this.state.requestDeliverDate,
+          note: this.state.note,
+        });
+    } else {
+      console.log("no such a user");
+    }
+    Alert.alert(" ", "Submit Successfully!", [
+      {
+        text: "Close",
+        onPress: () => {
+          console.log("press");
+        },
+      },
+    ]);
   };
   render() {
     return (
@@ -101,12 +137,30 @@ export default class ConfirmOrder extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <TextInput
-                placeholder="input date"
-                onChangeText={(requestDeliverDate) =>
-                  this.setState({ requestDeliverDate: requestDeliverDate })
-                }
+              <DatePicker
                 style={styles.infoTextRight}
+                date={this.state.requestDeliverDate}
+                mode="date"
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate="01-01-2016"
+                maxDate="01-01-2100"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                  },
+                  dateInput: {
+                    marginLeft: 36,
+                  },
+                }}
+                onDateChange={(date) => {
+                  this.setState({ requestDeliverDate: date });
+                }}
               />
             </View>
           </View>
@@ -126,8 +180,8 @@ export default class ConfirmOrder extends Component {
             </View>
           </View>
         </KeyboardAvoidingView>
-        <View style={globalStyles.line}></View>
         <Text> Purchased Items </Text>
+        <View style={globalStyles.line}></View>
         <View style={styles.flatlistContainer}>
           <FlatList
             keyExtractor={(item) => item.itemCode}

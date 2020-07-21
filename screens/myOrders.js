@@ -136,7 +136,7 @@ class MyOrders extends Component {
     var items = this.state.orderItems;
     items.forEach((orderItem) => {
       orderItem.quatity = 0.0;
-      this.setState({ orderItems: items, emptyText: " " });
+      this.setState({ orderItems: items, totalGST: 0.0, totalAmount: 0.0 });
     });
   };
 
