@@ -159,7 +159,6 @@ class MyOrders extends Component {
   };
 
   render() {
-    console.log("renderrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
     return (
       <KeyboardAvoidingView
         style={globalStyles.container}

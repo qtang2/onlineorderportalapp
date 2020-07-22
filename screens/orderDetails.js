@@ -1,44 +1,29 @@
 import React, { useState, Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Alert,
-  ScrollView,
-  Image,
-  TextInput,
-} from "react-native";
-import ConfirmButton from "../shared/confirmButton";
-import { Table, Row, Rows } from "react-native-table-component";
+import { StyleSheet, View, Text, Alert, Image, FlatList } from "react-native";
 import { globalStyles } from "../styles/global";
-import MyOrdersTable from "../components/myOrdersTable";
-import OrdersItemsTable from "../components/orderItemsTable";
 import { Icon } from "react-native-elements";
 import Invoice from "../screens/invoice";
 
+import firebase from "../database/firebase";
+import OrderedItem from "../components/orderedItem";
+
 export default class OrderDetails extends Component {
   constructor(props) {
-    // super(props);
+    super(props);
+    // console.log("********************************");
+    // console.log(props);
     this.state = {
-      tableHead: ["Img", "Qty", "Name", "Price", "Amount", "GST", "Total"],
-      widthArr: [80, 80, 80, 80, 80, 80, 80],
-      tableData: [
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        ["1", "2", "3", "4", "2", "2", "0"],
-        [" ", " ", " ", "Total", "20", "20", "20"],
-      ],
+      purchasedNo: this.props.route.params.purchasedNo,
+      purchasedItems: this.props.route.params.purchasedItems,
+      orderDate: this.props.route.params.orderDate,
+      requestDeliverDate: this.props.route.params.requestDeliverDate,
+      deliverAddress: this.props.route.params.deliverAddress,
+      amount: this.props.route.params.amount,
+      currentShopId: this.props.route.params.currentShopId,
+      note: this.props.route.params.note,
+      status: "Closed",
+      itemsWithInfo: [],
+      // currentShopName: this.props.route.params.currentShopName,
     };
   }
 
@@ -54,14 +39,82 @@ export default class OrderDetails extends Component {
   viewInvoice = () => {
     this.props.navigation.navigate("Invoice");
   };
+
+  getShopName(shopId) {
+    var shopName = "";
+    firebase
+      .database()
+      .ref("/shops")
+      .child(shopId)
+      .once("value", (snapshot) => {
+        console.log("shop nameeeeeeeeeeeeemeeee");
+        console.log(snapshot.toJSON().shopName);
+        shopName = snapshot.toJSON().shopName;
+        return shopName;
+      });
+  }
+
+  componentDidMount() {
+    this.getAllItemsInfo();
+  }
+
+  getAllItemsInfo() {
+    var itemsKeys = Object.keys(this.state.purchasedItems);
+    console.log(itemsKeys);
+    var itemsWithInfoList = [];
+    itemsKeys.forEach((itemCode) => {
+      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      // console.log(this.state.purchasedItems[itemCode]["price"]);
+      var currentUserId = firebase.auth().currentUser.uid;
+      firebase
+        .database()
+        .ref("/myItems")
+        .child(currentUserId)
+        .child(this.state.currentShopId)
+        .child(itemCode)
+        .once("value", (snapshot) => {
+          // console.log(snapshot.val());
+          var CICode = snapshot.toJSON().CICode;
+          firebase
+            .database()
+            .ref("items")
+            .child(itemCode)
+            .once("value", (snap) => {
+              // console.log("###############################");
+              // console.log(snap.val());
+              var orderedItem = {
+                itemCICode: snapshot.toJSON().CICode,
+                itemCode: itemCode,
+                itemName: snap.toJSON().itemName,
+                GST: snap.toJSON().GST,
+                itemImage: snap.toJSON().itemImage,
+                price: this.state.purchasedItems[itemCode]["price"],
+                quatity: this.state.purchasedItems[itemCode]["quatity"],
+                deliveredQuatity: this.state.purchasedItems[itemCode][
+                  "quatity"
+                ], // TODO: need to figure out when this quatity happened
+                amount:
+                  this.state.purchasedItems[itemCode]["price"] *
+                  this.state.purchasedItems[itemCode]["quatity"],
+              };
+              itemsWithInfoList.push(orderedItem);
+              this.setState({ itemsWithInfo: itemsWithInfoList });
+              // console.log("###############################");
+              // console.log(itemsWithInfoList);
+            });
+        });
+    });
+  }
+
   render() {
-    const state = this.state;
+    // console.log("###############################");
+    // console.log(this.state.itemsWithInfo);
     return (
       <View style={globalStyles.container}>
-        <View style={styles.shop}>
-          <Text style={styles.shopText}> Shop 111</Text>
-          <View style={globalStyles.line}></View>
-        </View>
+        <Text style={styles.shopText}>
+          Name name {this.getShopName(this.state.currentShopId)}
+        </Text>
+        <View style={globalStyles.line}></View>
 
         <View style={styles.orderInfoContainer}>
           <View style={styles.orderInfoRow}>
@@ -70,7 +123,10 @@ export default class OrderDetails extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <Text style={styles.infoTextRight}> PN112345667</Text>
+              <Text style={styles.infoTextRight}>
+                {" "}
+                {this.state.purchasedNo}
+              </Text>
             </View>
           </View>
 
@@ -80,7 +136,19 @@ export default class OrderDetails extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <Text style={styles.infoTextRight}> 17-Jun-2019 </Text>
+              <Text style={styles.infoTextRight}>{this.state.orderDate}</Text>
+            </View>
+          </View>
+
+          <View style={styles.orderInfoRow}>
+            <View style={styles.orderInfoRowLeft}>
+              <Text style={styles.infoTextLeft}>Delivery Date</Text>
+            </View>
+
+            <View style={styles.orderInfoRowRight}>
+              <Text style={styles.infoTextRight}>
+                {this.state.requestDeliverDate}
+              </Text>
             </View>
           </View>
 
@@ -91,7 +159,10 @@ export default class OrderDetails extends Component {
 
             <View style={styles.orderInfoInvoiceRowRight}>
               <View style={styles.invoiceInfo}>
-                <Text style={styles.invoiceDateText}> 17-Jun-2019</Text>
+                <Text style={styles.invoiceDateText}>
+                  {" "}
+                  {this.state.requestDeliverDate}
+                </Text>
                 <Icon
                   name="visibility"
                   onPress={this.viewInvoice}
@@ -107,7 +178,10 @@ export default class OrderDetails extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <Text style={styles.infoTextRight}> 17-Jun-2019 </Text>
+              <Text style={styles.infoTextRight}>
+                {" "}
+                {this.state.requestDeliverDate}{" "}
+              </Text>
             </View>
           </View>
 
@@ -117,7 +191,7 @@ export default class OrderDetails extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <Text style={styles.infoTextRight}> Closed </Text>
+              <Text style={styles.infoTextRight}> {this.state.status} </Text>
             </View>
           </View>
 
@@ -127,7 +201,10 @@ export default class OrderDetails extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <Text style={styles.infoTextRight}> Address 111 </Text>
+              <Text style={styles.infoTextRight}>
+                {" "}
+                {this.state.deliverAddress}{" "}
+              </Text>
             </View>
           </View>
 
@@ -137,21 +214,53 @@ export default class OrderDetails extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <Text style={styles.noteInput}> note note note </Text>
+              <Text style={styles.noteInput}> {this.state.note} </Text>
             </View>
           </View>
         </View>
 
-        <View style={globalStyles.line}></View>
-        <View style={styles.tableContainer}>
-          <OrdersItemsTable />
-        </View>
+        <Text> Ordered Items</Text>
+
+        <FlatList
+          style={styles.flatlist}
+          keyExtractor={(item) => item.itemCode}
+          data={this.state.itemsWithInfo}
+          // style={{ borderWidth: 1 }}
+          renderItem={({ item }) => (
+            <OrderedItem
+              image={item.itemImage}
+              itemCICode={item.itemCICode}
+              itemCode={item.itemCode}
+              itemName={item.itemName}
+              price={item.price}
+              GST={item.GST}
+              quatity={item.quatity}
+              deliveredQuatity={item.deliveredQuatity}
+              amount={item.amount}
+            />
+          )}
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  shop: {
+    flex: 0.5,
+    flexDirection: "column",
+    // borderWidth: 1,
+  },
+  orderInfoContainer: {
+    flex: 1.3,
+    flexDirection: "column",
+    alignItems: "center",
+    // borderWidth: 1,
+  },
+  flatlist: {
+    flex: 4,
+    // borderWidth: 1,
+  },
   orderInfoRow: {
     flexDirection: "row",
     flex: 1,
@@ -191,19 +300,12 @@ const styles = StyleSheet.create({
     borderColor: "pink",
     flex: 0.5,
   },
-  shop: {
-    flex: 0.5,
-    flexDirection: "column",
-  },
+
   shopText: {
     fontSize: 16,
     alignSelf: "center",
   },
-  orderInfoContainer: {
-    flex: 2,
-    flexDirection: "column",
-    alignItems: "center",
-  },
+
   orderInfo: {
     flex: 2,
     flexDirection: "row",

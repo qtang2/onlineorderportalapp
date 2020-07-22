@@ -47,7 +47,7 @@ export default class ConfirmOrder extends Component {
         this.state.purchasedNo
     );
     if (currentUser) {
-      console.log(this.state);
+      // console.log(this.state.purchasedItems);
       firebase
         .database()
         .ref("/myOrders")
@@ -61,14 +61,28 @@ export default class ConfirmOrder extends Component {
           requestDeliverDate: this.state.requestDeliverDate,
           note: this.state.note,
         });
+      this.state.purchasedItems.forEach((item) => {
+        firebase
+          .database()
+          .ref("/myOrders")
+          .child(currentUser.uid)
+          .child(this.state.currentShopId)
+          .child(this.state.purchasedNo)
+          .child("/purchasedItems")
+          .child(item.itemCode)
+          .set({
+            quatity: item.quatity,
+            price: item.price,
+          });
+      });
     } else {
       console.log("no such a user");
     }
-    Alert.alert(" ", "Submit Successfully!", [
+    Alert.alert(" ", "Order Submitted Successfully!", [
       {
         text: "Close",
         onPress: () => {
-          console.log("press");
+          this.props.navigation.navigate("MyOrders");
         },
       },
     ]);
