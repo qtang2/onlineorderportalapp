@@ -1,8 +1,7 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import { StyleSheet, View, Text, Alert, Image, FlatList } from "react-native";
 import { globalStyles } from "../styles/global";
 import { Icon } from "react-native-elements";
-import Invoice from "../screens/invoice";
 
 import firebase from "../database/firebase";
 import OrderedItem from "../components/orderedItem";
@@ -10,8 +9,6 @@ import OrderedItem from "../components/orderedItem";
 export default class OrderDetails extends Component {
   constructor(props) {
     super(props);
-    // console.log("********************************");
-    // console.log(props);
     this.state = {
       purchasedNo: this.props.route.params.purchasedNo,
       purchasedItems: this.props.route.params.purchasedItems,
@@ -22,7 +19,9 @@ export default class OrderDetails extends Component {
       currentShopId: this.props.route.params.currentShopId,
       note: this.props.route.params.note,
       status: "Closed",
+
       itemsWithInfo: [],
+      currentShopName: "",
       // currentShopName: this.props.route.params.currentShopName,
     };
   }
@@ -47,24 +46,21 @@ export default class OrderDetails extends Component {
       .ref("/shops")
       .child(shopId)
       .once("value", (snapshot) => {
-        console.log("shop nameeeeeeeeeeeeemeeee");
-        console.log(snapshot.toJSON().shopName);
         shopName = snapshot.toJSON().shopName;
-        return shopName;
+        this.setState({ currentShopName: shopName });
       });
   }
 
   componentDidMount() {
     this.getAllItemsInfo();
+    this.getShopName(this.state.currentShopId);
   }
 
   getAllItemsInfo() {
     var itemsKeys = Object.keys(this.state.purchasedItems);
-    console.log(itemsKeys);
+
     var itemsWithInfoList = [];
     itemsKeys.forEach((itemCode) => {
-      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-      // console.log(this.state.purchasedItems[itemCode]["price"]);
       var currentUserId = firebase.auth().currentUser.uid;
       firebase
         .database()
@@ -80,8 +76,6 @@ export default class OrderDetails extends Component {
             .ref("items")
             .child(itemCode)
             .once("value", (snap) => {
-              // console.log("###############################");
-              // console.log(snap.val());
               var orderedItem = {
                 itemCICode: snapshot.toJSON().CICode,
                 itemCode: itemCode,
@@ -99,21 +93,15 @@ export default class OrderDetails extends Component {
               };
               itemsWithInfoList.push(orderedItem);
               this.setState({ itemsWithInfo: itemsWithInfoList });
-              // console.log("###############################");
-              // console.log(itemsWithInfoList);
             });
         });
     });
   }
 
   render() {
-    // console.log("###############################");
-    // console.log(this.state.itemsWithInfo);
     return (
       <View style={globalStyles.container}>
-        <Text style={styles.shopText}>
-          Name name {this.getShopName(this.state.currentShopId)}
-        </Text>
+        <Text style={styles.shopText}>{this.state.currentShopName}</Text>
         <View style={globalStyles.line}></View>
 
         <View style={styles.orderInfoContainer}>

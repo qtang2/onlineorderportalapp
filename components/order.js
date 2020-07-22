@@ -1,21 +1,10 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TextInput,
-  Alert,
-  TouchableOpacity,
-} from "react-native";
-
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import firebase from "../database/firebase";
 
 export default class Order extends Component {
   constructor(props) {
     super(props);
-    // console.log("KKKKKKKKKKKKKKKK");
-    // console.log(props);
     this.state = {
       amount: 0.0,
       currentShopName: "",

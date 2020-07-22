@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import firebase from "../database/firebase";
-import { Icon } from "react-native-elements";
 
 export default class OrderedItem extends Component {
   constructor(props) {
     super(props);
-    console.log("ordereditem propssssssssssssssssssss");
-    console.log(props);
     this.state = {};
   }
 

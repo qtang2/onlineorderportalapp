@@ -23,7 +23,11 @@ class ManageOrdersStack extends Component {
             ),
           }}
         />
-        <Stack.Screen name="OrderDetails" component={OrderDetails} />
+        <Stack.Screen
+          name="OrderDetails"
+          component={OrderDetails}
+          options={{ title: "Order Details" }}
+        />
         <Stack.Screen name="Invoice" component={Invoice} />
       </Stack.Navigator>
     );

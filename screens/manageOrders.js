@@ -9,8 +9,6 @@ import { SearchBar } from "react-native-elements";
 class ManageOrders extends Component {
   constructor(props) {
     super(props);
-
-    // console.log(props);
     this.state = {
       currentShopId: "",
       orders: [],
@@ -23,8 +21,6 @@ class ManageOrders extends Component {
   };
 
   getAmount = (purchasedItems) => {
-    // console.log(purchasedItems);
-
     var amount = 0.0;
     Object.keys(purchasedItems).forEach((itemCode) => {
       amount =
@@ -43,8 +39,6 @@ class ManageOrders extends Component {
       .child(currentUserId)
       .child(shopId)
       .on("child_added", (snapshot) => {
-        // console.log(snapshot.val());
-        // console.log(snapshot.toJSON().purchasedItems);
         var orderObj = {
           deliverAddress:
             snapshot.toJSON().deliverAddress == ""
@@ -66,8 +60,6 @@ class ManageOrders extends Component {
           orders: ordersList,
         });
         this.arrayholder = ordersList;
-        // console.log(this.state.orders);
-        // console.log(ordersList.length);
       });
   }
 
@@ -113,19 +105,6 @@ class ManageOrders extends Component {
             />
           )}
         />
-        {/* <FlatList
-          keyExtractor={(order) => order.purchasedNo}
-          data={this.state.orders}
-          renderItem={({ item }) => {
-            <Order
-              purchasedNo={item.purchasedNo}
-              purchasedItems={item.purchasedItems}
-              deliverAddress={item.deliverAddress}
-              orderDate={item.orderDate}
-              requestDeliverDate={item.requestDeliverDate}
-            />;
-          }}
-        /> */}
 
         <View style={styles.title}>
           <Text>Total 100 entires</Text>
