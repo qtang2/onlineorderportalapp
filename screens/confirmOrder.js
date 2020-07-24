@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   View,
@@ -8,12 +8,16 @@ import {
   Image,
   TextInput,
   FlatList,
+  Button,
+  TouchableOpacity,
 } from "react-native";
 import ConfirmButton from "../shared/confirmButton";
 import { globalStyles } from "../styles/global";
 import PurchasedItem from "../components/purchasedItem";
-import DatePicker from "react-native-datepicker";
+// import DatePicker from "react-native-datepicker";
+import DatePickerModal from "react-native-modal-datetime-picker";
 import firebase from "../database/firebase";
+import { Icon } from "react-native-elements";
 
 export default class ConfirmOrder extends Component {
   constructor(props) {
@@ -27,17 +31,11 @@ export default class ConfirmOrder extends Component {
       note: "",
       currentShopId: this.props.route.params.currentShop.currentShopId,
       currentShopName: this.props.route.params.currentShop.currentShopName,
+      visibility: false,
     };
   }
 
   submitPressHandler = () => {
-    // Alert.alert(" ", "Submit Successfully!", [
-    //   {
-    //     text: "Close",
-    //     onPress: () => this.props.navigation.navigate("MyOrders"),
-    //   },
-    // ]);
-    // console.log(this.state.deliverAddress);
     var currentUser = firebase.auth().currentUser;
     console.log(
       currentUser.uid +
@@ -87,6 +85,29 @@ export default class ConfirmOrder extends Component {
       },
     ]);
   };
+
+  //TODO: need to handle invalid selected date
+  handleConfirm = (date) => {
+    // var currentD = this.state.orderDate.split("-");
+    // var currentDay = currentD[0];
+    // var currentMonth = currentD[1];
+    // var currentYear = currentD[2];
+    var d = new Date(date.toUTCString());
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDate();
+    this.setState({ requestDeliverDate: day + "-" + month + "-" + year });
+    this.setState({ visibility: false });
+  };
+
+  onPressCancel = () => {
+    this.setState({ visibility: false });
+  };
+  showDateSelectionModal = () => {
+    // console.log("select hhhhhhh");
+    this.setState({ visibility: true });
+  };
+
   render() {
     return (
       <KeyboardAvoidingView
@@ -151,32 +172,21 @@ export default class ConfirmOrder extends Component {
             </View>
 
             <View style={styles.orderInfoRowRight}>
-              <DatePicker
-                style={styles.date}
-                date={this.state.requestDeliverDate}
-                mode="date"
-                placeholder="select date"
-                format="DD-MM-YYYY"
-                minDate="01-01-2016"
-                maxDate="01-01-2100"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: "absolute",
-                    left: 0,
-                    // top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    // marginLeft: 36,
-                    borderColor: "#ddd",
-                  },
-                }}
-                onDateChange={(date) => {
-                  this.setState({ requestDeliverDate: date });
-                }}
-              />
+              {/* <Button title="select date" onPress={this.onPressButton} /> */}
+              <View style={styles.datePicker}>
+                <Icon name="date-range" iconStyle={styles.calendarIcon} />
+                <TouchableOpacity onPress={this.showDateSelectionModal}>
+                  <Text style={styles.dateText}>
+                    {this.state.requestDeliverDate}
+                  </Text>
+                </TouchableOpacity>
+                <DatePickerModal
+                  isVisible={this.state.visibility}
+                  onConfirm={this.handleConfirm}
+                  onCancel={this.onPressCancel}
+                  mode="date"
+                />
+              </View>
             </View>
           </View>
 
@@ -184,7 +194,6 @@ export default class ConfirmOrder extends Component {
             <View style={styles.orderInfoRowLeft}>
               <Text style={styles.infoTextLeft}> Note </Text>
             </View>
-
             <View style={styles.orderInfoRowRight}>
               <TextInput
                 style={styles.noteInput}
@@ -225,6 +234,30 @@ export default class ConfirmOrder extends Component {
 }
 
 const styles = StyleSheet.create({
+  datePicker: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    width: "100%",
+    alignSelf: "flex-end",
+
+    // borderWidth: 1,
+    // borderColor: "#ddd",
+    // width: "100%",
+    // textAlign: "center",
+    // fontSize: 15,
+    // alignSelf: "flex-end",
+  },
+  dateText: {
+    marginLeft: 34,
+    alignSelf: "center",
+    // borderWidth: 1,
+    fontSize: 15,
+  },
+  calendarIcon: {
+    // alignSelf: "center",
+    // borderWidth: 1,
+  },
   orderInfoContainer: {
     flex: 4.5,
     flexDirection: "column",

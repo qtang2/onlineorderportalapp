@@ -9,6 +9,7 @@ import OrderedItem from "../components/orderedItem";
 export default class OrderDetails extends Component {
   constructor(props) {
     super(props);
+    // console.log(props);
     this.state = {
       purchasedNo: this.props.route.params.purchasedNo,
       purchasedItems: this.props.route.params.purchasedItems,
@@ -51,7 +52,7 @@ export default class OrderDetails extends Component {
       });
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     this.getAllItemsInfo();
     this.getShopName(this.state.currentShopId);
   }
@@ -99,6 +100,7 @@ export default class OrderDetails extends Component {
   }
 
   render() {
+    // console.log(this.state.purchasedItems);
     return (
       <View style={globalStyles.container}>
         <Text style={styles.shopText}>{this.state.currentShopName}</Text>

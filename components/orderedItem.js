@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     marginLeft: 3,
   },
   itemCodeText: {
-    alignSelf: "center",
+    alignSelf: "flex-start",
   },
   rightContainer: {
     flex: 1,
