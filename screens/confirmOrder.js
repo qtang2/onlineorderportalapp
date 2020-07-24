@@ -22,6 +22,8 @@ import { Icon } from "react-native-elements";
 export default class ConfirmOrder extends Component {
   constructor(props) {
     super(props);
+    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    console.log(this.props.route.params.purchasedItems);
     this.state = {
       purchasedItems: this.props.route.params.purchasedItems,
       purchasedNo: this.props.route.params.purchasedNo,
@@ -37,13 +39,6 @@ export default class ConfirmOrder extends Component {
 
   submitPressHandler = () => {
     var currentUser = firebase.auth().currentUser;
-    console.log(
-      currentUser.uid +
-        "   " +
-        this.state.currentShopId +
-        "    " +
-        this.state.purchasedNo
-    );
     if (currentUser) {
       // console.log(this.state.purchasedItems);
       firebase

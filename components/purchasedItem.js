@@ -8,8 +8,6 @@ import {
   Alert,
   KeyboardAvoidingView,
 } from "react-native";
-import firebase from "../database/firebase";
-import { Icon } from "react-native-elements";
 
 export default class PurchasedItem extends Component {
   constructor(props) {
@@ -40,10 +38,11 @@ export default class PurchasedItem extends Component {
         <View style={styles.rightContainer}>
           <Text style={styles.itemText}>{this.props.itemName}</Text>
           <Text style={styles.itemText}>
-            Qty: {this.props.quatity} , $ {this.props.price}
+            Qty: {this.props.quatity} , $ {this.props.price}, GST: ${" "}
+            {this.props.GST}
           </Text>
           <Text style={styles.itemText}>
-            Amount: {this.props.price * this.props.quatity} , GST:{" "}
+            Total Amount: {this.props.price * this.props.quatity} , GST:{" "}
             {this.props.GST * this.props.quatity}
           </Text>
         </View>

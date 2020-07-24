@@ -48,7 +48,6 @@ class MyOrders extends Component {
       }
     });
     if (purchasedItems.length != 0) {
-      // console.log(purchasedItems);
       this.props.navigation.navigate("ConfirmOrder", {
         purchasedItems: purchasedItems,
         purchasedNo: purchasedNo,
@@ -61,7 +60,6 @@ class MyOrders extends Component {
   }
 
   confirmPressHandler = () => {
-    // console.log("confirm pressed   " + this.state.currentShopId);
     var currentUser = firebase.auth().currentUser;
     var shopObj = {};
     if (currentUser) {
@@ -99,9 +97,9 @@ class MyOrders extends Component {
           var itemObj = {
             itemCode: snap.key,
             itemName: snap.toJSON().itemName,
-            price: snap.toJSON().price,
+            price: parseFloat(snap.toJSON().price),
             itemImage: snap.toJSON().itemImage,
-            GST: snap.toJSON().GST,
+            GST: parseFloat(snap.toJSON().GST),
             category: snap.toJSON().category,
             location:
               snapshot.toJSON().location == null
@@ -111,7 +109,7 @@ class MyOrders extends Component {
               snapshot.toJSON().CICode == null
                 ? snap.key
                 : snapshot.toJSON().CICode,
-            quatity: 0,
+            quatity: 0.0,
           };
           itemsList.push(itemObj);
           // console.log(itemsList);
@@ -133,15 +131,18 @@ class MyOrders extends Component {
 
   //TODO: need to figure out how to clear input after press reset button
   resetQuatity = () => {
+    console.log("reset quatity");
     var items = this.state.orderItems;
     items.forEach((orderItem) => {
       orderItem.quatity = 0.0;
       this.setState({ orderItems: items, totalGST: 0.0, totalAmount: 0.0 });
     });
+    console.log(this.state.orderItems);
   };
 
-  changeQuatity = (itemCode, quatity, price, GST) => {
-    console.log("changegggggg");
+  changeQuatity = (itemCode, quatity) => {
+    // console.log("changegggggg00000000000");
+    // console.log(quatity);
     var items = this.state.orderItems;
 
     items.forEach((orderItem) => {
@@ -149,12 +150,17 @@ class MyOrders extends Component {
       if (orderItem.itemCode == itemCode) {
         orderItem.quatity = quatity;
       }
+    });
 
-      this.setState({
-        orderItems: items,
-        totalAmount: this.state.totalAmount + quatity * price,
-        totalGST: this.state.totalGST + quatity * GST,
-      });
+    var amount = 0.0;
+    var gst = 0.0;
+    items.forEach((orderItem) => {
+      amount = amount + orderItem.price * orderItem.quatity;
+      gst = gst + orderItem.GST * orderItem.quatity;
+    });
+    this.setState({
+      totalAmount: amount,
+      totalGST: gst,
     });
   };
 
@@ -193,7 +199,8 @@ class MyOrders extends Component {
 
         <View style={globalStyles.line}></View>
         <Text style={{ textAlign: "right" }}>
-          Total GST ${this.state.totalGST} Total Amount {this.state.totalAmount}
+          Total GST $ {this.state.totalGST}, Total Amount ${" "}
+          {this.state.totalAmount}
         </Text>
         <View style={styles.btnsContainer}>
           <ResetButton text="Reset" onPress={this.resetQuatity} />

@@ -32,17 +32,25 @@ class ManageOrders extends Component {
     this.setState({ orders: newData, search: text });
   };
 
-  getAmount = (purchasedItems) => {
+  getAmount(purchasedItems) {
     var amount = 0.0;
-    Object.keys(purchasedItems).forEach((itemCode) => {
-      amount =
-        amount +
-        purchasedItems[itemCode].price * purchasedItems[itemCode].quatity;
-    });
-    return amount;
-  };
+    // console.log("***************************************************");
+    // console.log(purchasedItems);
+    if (purchasedItems != null) {
+      var itemsKeys = Object.keys(purchasedItems);
+      itemsKeys.forEach((itemCode) => {
+        amount =
+          amount +
+          purchasedItems[itemCode].price * purchasedItems[itemCode].quatity;
+      });
+      return amount;
+    } else {
+      console.log("amout is amount 0000000000000000");
+    }
+  }
 
   fetchOrdersData(shopId) {
+    // console.log(shopId);
     var rootRef = firebase.database().ref();
     var currentUserId = firebase.auth().currentUser.uid;
     var myOrdersRef = rootRef.child("myOrders");
@@ -51,27 +59,38 @@ class ManageOrders extends Component {
       .child(currentUserId)
       .child(shopId)
       .on("child_added", (snapshot) => {
-        var orderObj = {
-          deliverAddress:
-            snapshot.toJSON().deliverAddress == ""
-              ? "default Address"
-              : snapshot.toJSON().deliverAddress,
-          note:
-            snapshot.toJSON().note == ""
-              ? "Empty note"
-              : snapshot.toJSON().note,
-          orderDate: snapshot.toJSON().orderDate,
-          requestDeliverDate: snapshot.toJSON().requestDeliverDate,
-          purchasedItems: snapshot.toJSON().purchasedItems,
-          purchasedNo: snapshot.key,
-          amount: this.getAmount(snapshot.toJSON().purchasedItems),
-        };
-        ordersList.push(orderObj);
-        this.setState({
-          dataFetched: true,
-          orders: ordersList,
-        });
-        this.arrayholder = ordersList;
+        if (snapshot.toJSON() != null) {
+          console.log(snapshot.val());
+          console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+          console.log(snapshot.toJSON().purchasedItems);
+          var orderObj = {
+            deliverAddress:
+              snapshot.toJSON().deliverAddress == ""
+                ? "default Address"
+                : snapshot.toJSON().deliverAddress,
+            note:
+              snapshot.toJSON().note == ""
+                ? "Empty note"
+                : snapshot.toJSON().note,
+            orderDate: snapshot.toJSON().orderDate,
+            requestDeliverDate: snapshot.toJSON().requestDeliverDate,
+            purchasedItems: snapshot.toJSON().purchasedItems,
+            purchasedNo: snapshot.key,
+            amount: this.getAmount(snapshot.toJSON().purchasedItems),
+          };
+          ordersList.push(orderObj);
+          this.setState({
+            dataFetched: true,
+            orders: ordersList,
+          });
+          this.arrayholder = ordersList;
+        } else {
+          console.log("emptyyyyyyyyyyyyyyyyyyy");
+          this.setState({
+            dataFetched: true,
+            orders: [],
+          });
+        }
       });
   }
 
@@ -101,7 +120,7 @@ class ManageOrders extends Component {
           containerStyle={globalStyles.searchBarContainer}
           inputContainerStyle={globalStyles.searchBarInputContainer}
         />
-        <View style={globalStyles.line}></View>
+        {/* <View style={globalStyles.line}></View> */}
         <FlatList
           keyExtractor={(item) => item.purchasedNo}
           data={this.state.orders}

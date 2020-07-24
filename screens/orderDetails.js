@@ -58,45 +58,51 @@ export default class OrderDetails extends Component {
   }
 
   getAllItemsInfo() {
-    var itemsKeys = Object.keys(this.state.purchasedItems);
+    console.log("purchased Iteeeeeeeeeeeeeeemmmmm");
+    console.log(this.state.purchasedItems);
+    if (this.state.purchasedItems != null) {
+      var itemsKeys = Object.keys(this.state.purchasedItems);
 
-    var itemsWithInfoList = [];
-    itemsKeys.forEach((itemCode) => {
-      var currentUserId = firebase.auth().currentUser.uid;
-      firebase
-        .database()
-        .ref("/myItems")
-        .child(currentUserId)
-        .child(this.state.currentShopId)
-        .child(itemCode)
-        .once("value", (snapshot) => {
-          // console.log(snapshot.val());
-          var CICode = snapshot.toJSON().CICode;
-          firebase
-            .database()
-            .ref("items")
-            .child(itemCode)
-            .once("value", (snap) => {
-              var orderedItem = {
-                itemCICode: snapshot.toJSON().CICode,
-                itemCode: itemCode,
-                itemName: snap.toJSON().itemName,
-                GST: snap.toJSON().GST,
-                itemImage: snap.toJSON().itemImage,
-                price: this.state.purchasedItems[itemCode]["price"],
-                quatity: this.state.purchasedItems[itemCode]["quatity"],
-                deliveredQuatity: this.state.purchasedItems[itemCode][
-                  "quatity"
-                ], // TODO: need to figure out when this quatity happened
-                amount:
-                  this.state.purchasedItems[itemCode]["price"] *
-                  this.state.purchasedItems[itemCode]["quatity"],
-              };
-              itemsWithInfoList.push(orderedItem);
-              this.setState({ itemsWithInfo: itemsWithInfoList });
-            });
-        });
-    });
+      var itemsWithInfoList = [];
+      itemsKeys.forEach((itemCode) => {
+        var currentUserId = firebase.auth().currentUser.uid;
+        firebase
+          .database()
+          .ref("/myItems")
+          .child(currentUserId)
+          .child(this.state.currentShopId)
+          .child(itemCode)
+          .once("value", (snapshot) => {
+            // console.log(snapshot.val());
+            var CICode = snapshot.toJSON().CICode;
+            firebase
+              .database()
+              .ref("items")
+              .child(itemCode)
+              .once("value", (snap) => {
+                var orderedItem = {
+                  itemCICode: snapshot.toJSON().CICode,
+                  itemCode: itemCode,
+                  itemName: snap.toJSON().itemName,
+                  GST: snap.toJSON().GST,
+                  itemImage: snap.toJSON().itemImage,
+                  price: this.state.purchasedItems[itemCode]["price"],
+                  quatity: this.state.purchasedItems[itemCode]["quatity"],
+                  deliveredQuatity: this.state.purchasedItems[itemCode][
+                    "quatity"
+                  ], // TODO: need to figure out when this quatity happened
+                  amount:
+                    this.state.purchasedItems[itemCode]["price"] *
+                    this.state.purchasedItems[itemCode]["quatity"],
+                };
+                itemsWithInfoList.push(orderedItem);
+                this.setState({ itemsWithInfo: itemsWithInfoList });
+              });
+          });
+      });
+    } else {
+      console.log("purchased Items is empty");
+    }
   }
 
   render() {

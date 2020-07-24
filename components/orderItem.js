@@ -7,25 +7,35 @@ export default class OrderItem extends Component {
   constructor(props) {
     super(props);
     // console.log("orderitem propssssssssssssssssssss");
-    // console.log(props);
+    // console.log(typeof this.props.price);
     this.state = {
       quatity: this.props.quatity,
-      amount: 0,
+      amount: 0.0,
     };
   }
 
-  changeQuatity(quatity) {
-    this.setState({ quatity: quatity });
-    this.props.onChangeQuatity(
-      this.props.itemCode,
-      quatity,
-      this.props.price,
-      this.props.GST
-    );
-    var amount = this.props.price * quatity;
-    this.setState({
-      amount: amount,
-    });
+  changeQuatity(q) {
+    if (q != "") {
+      var quatity = parseFloat(q);
+      this.setState({ quatity: quatity });
+      this.props.onChangeQuatity(this.props.itemCode, quatity);
+      var amount = this.props.price * quatity;
+      this.setState({
+        amount: amount,
+      });
+    } else {
+      this.setState({ quatity: 0.0 });
+      this.props.onChangeQuatity(
+        this.props.itemCode,
+        0.0,
+        this.props.price,
+        this.props.GST
+      );
+      this.setState({
+        amount: 0.0,
+      });
+    }
+
     // console.log(quatity);
   }
 
@@ -59,10 +69,7 @@ export default class OrderItem extends Component {
               onChangeText={(quatity) => this.changeQuatity(quatity)}
             />
             {/* <Icon name="add" onPress={this.addQuatity} style={styles.icon} /> */}
-            <Text style={styles.amountText}>
-              {" "}
-              = $ {this.props.price * this.props.quatity}
-            </Text>
+            <Text style={styles.amountText}> = $ {this.state.amount}</Text>
           </View>
         </View>
       </View>
