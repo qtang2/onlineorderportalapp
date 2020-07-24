@@ -152,7 +152,7 @@ export default class ConfirmOrder extends Component {
 
             <View style={styles.orderInfoRowRight}>
               <DatePicker
-                style={styles.infoTextRight}
+                style={styles.date}
                 date={this.state.requestDeliverDate}
                 mode="date"
                 placeholder="select date"
@@ -165,11 +165,12 @@ export default class ConfirmOrder extends Component {
                   dateIcon: {
                     position: "absolute",
                     left: 0,
-                    top: 4,
+                    // top: 4,
                     marginLeft: 0,
                   },
                   dateInput: {
-                    marginLeft: 36,
+                    // marginLeft: 36,
+                    borderColor: "#ddd",
                   },
                 }}
                 onDateChange={(date) => {
@@ -279,6 +280,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignSelf: "flex-end",
     // backgroundColor: "pink",
+  },
+  date: {
+    // borderWidth: 1,
+    width: "100%",
+    // borderColor: "#ddd",
   },
   noteInfo: {
     flex: 1,

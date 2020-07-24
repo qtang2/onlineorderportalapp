@@ -51,7 +51,7 @@ export default class OrderDetails extends Component {
       });
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     this.getAllItemsInfo();
     this.getShopName(this.state.currentShopId);
   }

@@ -15,7 +15,7 @@ import firebase from "../database/firebase";
 export default class Item extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
     this.state = {
       openCICodeModal: false,
       openLocationModal: false,

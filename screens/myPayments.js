@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Modal,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import { globalStyles } from "../styles/global";
 import { SearchBar } from "react-native-elements";
@@ -25,7 +26,6 @@ export default class MyPayments extends Component {
       search: "",
       currentShopId: "",
       // currentShopName: ""
-      search: "",
     };
     this.arrayholder = []; // For search function
     // this.onChange = this.onChange.bind(this);
@@ -105,7 +105,10 @@ export default class MyPayments extends Component {
   render() {
     // console.log(this.state.myPayments);
     return (
-      <View style={globalStyles.container}>
+      <KeyboardAvoidingView
+        style={globalStyles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
         <ShopsPicker
           onChange={(e) => {
             this.getCurrentShop(e);
@@ -141,7 +144,7 @@ export default class MyPayments extends Component {
           }}
         />
         <ResetButton text="New" onPress={this.addNewPayment} />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

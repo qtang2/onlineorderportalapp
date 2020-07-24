@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  KeyboardAvoidingView,
+} from "react-native";
 import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
 import Order from "../components/order";
@@ -14,10 +20,16 @@ class ManageOrders extends Component {
       orders: [],
       dataFetched: false,
       arrayholder: [],
+      search: "",
     };
   }
-  search = () => {
-    console.log("search pressed!!");
+  searchFilterFunction = (text) => {
+    const newData = this.arrayholder.filter((order) => {
+      const orderData = `${order.purchasedNo.toUpperCase()}`;
+      const textData = text.toUpperCase();
+      return orderData.indexOf(textData) > -1;
+    });
+    this.setState({ orders: newData, search: text });
   };
 
   getAmount = (purchasedItems) => {
@@ -71,7 +83,10 @@ class ManageOrders extends Component {
   render() {
     // console.log(this.state.orders);
     return (
-      <View style={globalStyles.container}>
+      <KeyboardAvoidingView
+        style={globalStyles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
         <ShopsPicker
           onChange={(e) => {
             this.getCurrentShop(e);
@@ -109,7 +124,7 @@ class ManageOrders extends Component {
         <View style={styles.title}>
           <Text>Total 100 entires</Text>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
