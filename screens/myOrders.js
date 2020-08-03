@@ -4,8 +4,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  Image,
-  TextInput,
   KeyboardAvoidingView,
 } from "react-native";
 import { globalStyles } from "../styles/global";
@@ -135,9 +133,11 @@ class MyOrders extends Component {
     var items = this.state.orderItems;
     items.forEach((orderItem) => {
       orderItem.quatity = 0.0;
-      this.setState({ orderItems: items, totalGST: 0.0, totalAmount: 0.0 });
     });
-    console.log(this.state.orderItems);
+    this.setState({ orderItems: items, totalGST: 0.0, totalAmount: 0.0 });
+    // this.setState({totalAmount: 0.0,totalGST:0.0})
+    // this.setState({ state: this.state });
+    // console.log(this.state.orderItems);
   };
 
   changeQuatity = (itemCode, quatity) => {
@@ -165,6 +165,8 @@ class MyOrders extends Component {
   };
 
   render() {
+    // console.log("rendeeeeeeeeeeeeeeeer");
+    // console.log(this.state.orderItems);
     return (
       <KeyboardAvoidingView
         style={globalStyles.container}

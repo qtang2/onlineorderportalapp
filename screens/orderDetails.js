@@ -9,7 +9,7 @@ import OrderedItem from "../components/orderedItem";
 export default class OrderDetails extends Component {
   constructor(props) {
     super(props);
-    // console.log(props);
+    console.log(props.route.params.purchasedItems);
     this.state = {
       purchasedNo: this.props.route.params.purchasedNo,
       purchasedItems: this.props.route.params.purchasedItems,
@@ -26,15 +26,6 @@ export default class OrderDetails extends Component {
       // currentShopName: this.props.route.params.currentShopName,
     };
   }
-
-  submitPressHandler = () => {
-    Alert.alert(" ", "Submit Successfully!", [
-      {
-        text: "Close",
-        onPress: () => this.props.navigation.navigate("MyOrders"),
-      },
-    ]);
-  };
 
   viewInvoice = () => {
     this.props.navigation.navigate("Invoice");
@@ -58,8 +49,8 @@ export default class OrderDetails extends Component {
   }
 
   getAllItemsInfo() {
-    console.log("purchased Iteeeeeeeeeeeeeeemmmmm");
-    console.log(this.state.purchasedItems);
+    // console.log("purchased Iteeeeeeeeeeeeeeemmmmm");
+    // console.log(this.state.purchasedItems);
     if (this.state.purchasedItems != null) {
       var itemsKeys = Object.keys(this.state.purchasedItems);
 
@@ -91,9 +82,10 @@ export default class OrderDetails extends Component {
                   deliveredQuatity: this.state.purchasedItems[itemCode][
                     "quatity"
                   ], // TODO: need to figure out when this quatity happened
-                  amount:
-                    this.state.purchasedItems[itemCode]["price"] *
-                    this.state.purchasedItems[itemCode]["quatity"],
+                  // amount:
+                  //   this.state.purchasedItems[itemCode]["price"] *
+                  //   this.state.purchasedItems[itemCode]["quatity"],
+                  amount: this.state.amount,
                 };
                 itemsWithInfoList.push(orderedItem);
                 this.setState({ itemsWithInfo: itemsWithInfoList });

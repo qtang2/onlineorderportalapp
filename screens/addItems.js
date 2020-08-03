@@ -99,8 +99,9 @@ export default class AddItems extends Component {
               itemName: item.itemName,
             });
           alert("Add successfully!");
+        } else {
+          alert("Nothing selected!");
         }
-        alert("Nothing selected!");
       }
     } else {
       console.log("no such a user");

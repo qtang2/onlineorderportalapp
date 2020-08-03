@@ -49,6 +49,7 @@ class ManageOrders extends Component {
     }
   }
 
+  //TODO: need to figure our when not saving , still refresh content
   fetchOrdersData(shopId) {
     // console.log(shopId);
     var rootRef = firebase.database().ref();
@@ -60,9 +61,6 @@ class ManageOrders extends Component {
       .child(shopId)
       .on("child_added", (snapshot) => {
         if (snapshot.toJSON() != null) {
-          console.log(snapshot.val());
-          console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-          console.log(snapshot.toJSON().purchasedItems);
           var orderObj = {
             deliverAddress:
               snapshot.toJSON().deliverAddress == ""
@@ -83,9 +81,11 @@ class ManageOrders extends Component {
             dataFetched: true,
             orders: ordersList,
           });
+          console.log("fetch orders detailslllllllllllllll");
+          console.log(this.state.orders);
           this.arrayholder = ordersList;
         } else {
-          console.log("emptyyyyyyyyyyyyyyyyyyy");
+          // console.log("emptyyyyyyyyyyyyyyyyyyy");
           this.setState({
             dataFetched: true,
             orders: [],
@@ -95,12 +95,14 @@ class ManageOrders extends Component {
   }
 
   getCurrentShop = (shopId) => {
+    console.log("current shop manage orders");
     this.setState({ currentShopId: shopId });
     this.fetchOrdersData(shopId);
   };
 
   render() {
-    // console.log(this.state.orders);
+    console.log("manage order rendersssssssssssssssssss");
+    console.log(this.state.orders);
     return (
       <KeyboardAvoidingView
         style={globalStyles.container}

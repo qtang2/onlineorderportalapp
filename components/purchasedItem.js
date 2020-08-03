@@ -4,8 +4,6 @@ import {
   View,
   Text,
   Image,
-  TextInput,
-  Alert,
   KeyboardAvoidingView,
 } from "react-native";
 

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Alert } from "react-native";
-import firebase from "../database/firebase";
-import { Icon } from "react-native-elements";
 
 export default class OrderItem extends Component {
   constructor(props) {
@@ -9,7 +7,7 @@ export default class OrderItem extends Component {
     // console.log("orderitem propssssssssssssssssssss");
     // console.log(typeof this.props.price);
     this.state = {
-      quatity: this.props.quatity,
+      // quatity: this.props.quatity,
       amount: 0.0,
     };
   }
@@ -17,29 +15,24 @@ export default class OrderItem extends Component {
   changeQuatity(q) {
     if (q != "") {
       var quatity = parseFloat(q);
-      this.setState({ quatity: quatity });
+      // this.setState({ quatity: quatity });
       this.props.onChangeQuatity(this.props.itemCode, quatity);
       var amount = this.props.price * quatity;
       this.setState({
         amount: amount,
       });
     } else {
-      this.setState({ quatity: 0.0 });
-      this.props.onChangeQuatity(
-        this.props.itemCode,
-        0.0,
-        this.props.price,
-        this.props.GST
-      );
+      // this.setState({ quatity: 0.0 });
+      this.props.onChangeQuatity(this.props.itemCode, 0.0);
       this.setState({
         amount: 0.0,
       });
     }
-
-    // console.log(quatity);
   }
 
   render() {
+    // console.log("quatity is whatttttttttt");
+    // console.log(this.state.quatity);
     return (
       <View style={styles.itemRow}>
         <View style={styles.leftContainer}>
@@ -57,18 +50,14 @@ export default class OrderItem extends Component {
             $ {this.props.price} , GST: {this.props.GST}
           </Text>
           <View style={styles.quatityContainer}>
-            {/* <Icon
-              name="remove"
-              onPress={this.reduceQuatity}
-              style={styles.icon}
-            /> */}
             <TextInput
               placeholder="0"
+              // value={this.props.quatity}
               keyboardType="numeric"
               style={styles.input}
               onChangeText={(quatity) => this.changeQuatity(quatity)}
             />
-            {/* <Icon name="add" onPress={this.addQuatity} style={styles.icon} /> */}
+
             <Text style={styles.amountText}> = $ {this.state.amount}</Text>
           </View>
         </View>
