@@ -1,19 +1,15 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   View,
   Text,
   FlatList,
-  Button,
-  Alert,
   Image,
   KeyboardAvoidingView,
 } from "react-native";
 import firebase from "../database/firebase";
 import { globalStyles } from "../styles/global";
 import ShopsPicker from "../shared/shopsPicker";
-import Search from "../shared/search";
-import Item from "../components/item";
 import ConfirmButton from "../shared/confirmButton";
 import ResetButton from "../shared/resetButton";
 import { TouchableOpacity } from "react-native-gesture-handler";

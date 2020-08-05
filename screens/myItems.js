@@ -32,43 +32,58 @@ export default class MyItems extends Component {
   };
 
   fetchItemsData(shopId) {
-    // console.log("&&&&&&&&&&&&&&&   " + shopId);
-    var rootRef = firebase.database().ref();
-    var currentUserId = firebase.auth().currentUser.uid;
-    var myItemsRef = rootRef.child("myItems");
-    var itemsRef = rootRef.child("items");
-    var itemsList = [];
-    myItemsRef
-      .child(currentUserId)
-      .child(shopId)
-      .on("child_added", (snapshot) => {
-        let itemRef = itemsRef.child(snapshot.key);
-        // console.log(snapshot.key);
-        itemRef.on("value", (snap) => {
-          var itemObj = {
-            itemCode: snap.key,
-            itemName: snap.toJSON().itemName,
-            price: snap.toJSON().price,
-            itemImage: snap.toJSON().itemImage,
-            GST: snap.toJSON().GST,
-            category: snap.toJSON().category,
-            location:
-              snapshot.toJSON().location == null
-                ? "Empty"
-                : snapshot.toJSON().location,
-            CICode:
-              snapshot.toJSON().CICode == null
-                ? snap.key
-                : snapshot.toJSON().CICode,
-          };
-          itemsList.push(itemObj);
-          this.setState({
-            dataFetched: true,
-            myItems: itemsList,
-          });
-          this.arrayholder = itemsList;
+    console.log("&&&&&&&&&&&&&&&   " + shopId);
+    var myItemsURL =
+      "https://fngp.com.au/KCWebApi/api/productitems/" + shopId + "/MyProducts";
+    fetch(myItemsURL)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        this.setState({
+          dataFetched: true,
+          myItems: responseJson,
         });
+        this.arrayholder = responseJson;
+      })
+      .catch((error) => {
+        console.log(error);
       });
+    // var rootRef = firebase.database().ref();
+    // var currentUserId = firebase.auth().currentUser.uid;
+    // var myItemsRef = rootRef.child("myItems");
+    // var itemsRef = rootRef.child("items");
+    // var itemsList = [];
+    // myItemsRef
+    //   .child(currentUserId)
+    //   .child(shopId)
+    //   .on("child_added", (snapshot) => {
+    //     let itemRef = itemsRef.child(snapshot.key);
+    //     // console.log(snapshot.key);
+    //     itemRef.on("value", (snap) => {
+    //       var itemObj = {
+    //         itemCode: snap.key,
+    //         itemName: snap.toJSON().itemName,
+    //         price: snap.toJSON().price,
+    //         itemImage: snap.toJSON().itemImage,
+    //         GST: snap.toJSON().GST,
+    //         category: snap.toJSON().category,
+    //         location:
+    //           snapshot.toJSON().location == null
+    //             ? "Empty"
+    //             : snapshot.toJSON().location,
+    //         CICode:
+    //           snapshot.toJSON().CICode == null
+    //             ? snap.key
+    //             : snapshot.toJSON().CICode,
+    //       };
+    //       itemsList.push(itemObj);
+    //       this.setState({
+    //         dataFetched: true,
+    //         myItems: itemsList,
+    //       });
+    //       this.arrayholder = itemsList;
+    //     });
+    //   });
   }
 
   getCurrentShop = (shopId) => {
@@ -100,18 +115,19 @@ export default class MyItems extends Component {
           inputContainerStyle={globalStyles.searchBarInputContainer}
         />
         <FlatList
-          keyExtractor={(item) => item.itemCode}
+          keyExtractor={(item) => item.CustomerPriceId}
           data={this.state.myItems}
           renderItem={({ item }) => (
             <Item
-              itemCode={item.itemCode}
-              itemName={item.itemName}
-              price={item.price}
-              itemImage={item.itemImage}
+              itemId={item.CustomerPriceId}
+              itemCode={item.Code}
+              itemName={item.Name}
+              price={item.CustomerPrice}
+              itemImage={item.ImageStr}
               GST={item.GST}
               category={item.category}
               location={item.location}
-              CICode={item.CICode}
+              CICode={item.CustomerCode}
               currentShopId={this.state.currentShopId}
               onChangeCICode={(newCICode) => this.updateItemsData(newCICode)}
               onChangeLocation={(newLocation) =>

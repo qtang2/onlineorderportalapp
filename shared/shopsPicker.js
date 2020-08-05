@@ -14,23 +14,21 @@ export default class ShopsPicker extends Component {
   }
 
   fetchShopsData = () => {
-    var rootRef = firebase.database().ref();
-    var currentUserId = firebase.auth().currentUser.uid;
-    var myShopsRef = rootRef.child("myShops");
-    var shopsList = [];
-
-    myShopsRef.child(currentUserId).on("child_added", (snapshot) => {
-      // console.log(snapshot.toJSON().shopName);
-      var shopObj = {
-        shopId: snapshot.key,
-        shopName: snapshot.toJSON().shopName,
-      };
-      shopsList.push(shopObj);
-      this.setState({
-        dataFetched: true,
-        myShops: shopsList,
+    fetch(
+      "https://fngp.com.au/KCWebApi/api/users/9e9986bc-3491-45ac-9a3e-93e501b09557/Customers"
+    )
+      .then((response) => response.json())
+      .then((responseJson) => {
+        // console.log(responseJson);
+        this.setState({
+          dataFetched: true,
+          myShops: responseJson,
+        });
+        // console.log(this.state.myShops);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
   };
 
   componentDidMount() {
@@ -39,13 +37,7 @@ export default class ShopsPicker extends Component {
 
   shopsPickerItemsList = () => {
     return this.state.myShops.map((shop) => {
-      return (
-        <Picker.Item
-          label={shop.shopName}
-          key={shop.shopId}
-          value={shop.shopId}
-        />
-      );
+      return <Picker.Item label={shop.Text} key={shop.Id} value={shop.Id} />;
     });
   };
 

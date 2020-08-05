@@ -115,7 +115,7 @@ export default class Item extends Component {
         <View style={styles.itemInfoContainer}>
           <Text style={styles.itemText}>{this.props.itemName}</Text>
           <Text style={styles.itemText}>
-            $ {this.props.price}, GST: {this.props.GST}
+            {this.props.price}, GST: {this.props.GST}
           </Text>
           <TouchableOpacity onLongPress={this.changeCICode}>
             <Text style={styles.changableItemText}>
