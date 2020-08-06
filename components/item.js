@@ -47,59 +47,66 @@ export default class Item extends Component {
   };
 
   saveChangedCICode = (e) => {
-    var rootRef = firebase.database().ref();
-    var currentUserId = firebase.auth().currentUser.uid;
-    var myItemsRef = rootRef.child("myItems");
-    var newCICode = this.state.CICode;
+    console.log(this.state.CICode);
+    Alert.alert("", "Function in progress", [
+      { text: "Close", onPress: () => this.closeCICodeModal() },
+    ]);
+    // var rootRef = firebase.database().ref();
+    // var currentUserId = firebase.auth().currentUser.uid;
+    // var myItemsRef = rootRef.child("myItems");
+    // var newCICode = this.state.CICode;
     // console.log(newCICode);
-    if (newCICode != "") {
-      myItemsRef
-        .child(currentUserId)
-        .child(this.props.currentShopId)
-        .child(this.props.itemCode)
-        .update({
-          CICode: this.state.CICode,
-        });
-      this.props.onChangeCICode(newCICode);
-      Alert.alert("", "Your C.I.Code changed successfully", [
-        { text: "Close", onPress: () => this.closeCICodeModal() },
-      ]);
+    // if (newCICode != "") {
+    //   myItemsRef
+    //     .child(currentUserId)
+    //     .child(this.props.currentShopId)
+    //     .child(this.props.itemCode)
+    //     .update({
+    //       CICode: this.state.CICode,
+    //     });
+    //   this.props.onChangeCICode(newCICode);
+    //   Alert.alert("", "Your C.I.Code changed successfully", [
+    //     { text: "Close", onPress: () => this.closeCICodeModal() },
+    //   ]);
 
-      this.setState({
-        CICode: "",
-      });
-    } else {
-      alert("Please input your CICode!");
-    }
+    //   this.setState({
+    //     CICode: "",
+    //   });
+    // } else {
+    //   alert("Please input your CICode!");
+    // }
   };
 
   saveChangedLocation = (e) => {
     // console.log("****************      " + e);
+    console.log(this.state.location);
+    Alert.alert("", "Function in progress", [
+      { text: "Close", onPress: () => this.closeLocationModal() },
+    ]);
+    // var rootRef = firebase.database().ref();
+    // var currentUserId = firebase.auth().currentUser.uid;
+    // var myItemsRef = rootRef.child("myItems");
+    // var newLocation = this.state.location;
 
-    var rootRef = firebase.database().ref();
-    var currentUserId = firebase.auth().currentUser.uid;
-    var myItemsRef = rootRef.child("myItems");
-    var newLocation = this.state.location;
-    console.log(newLocation);
-    if (newLocation != "") {
-      myItemsRef
-        .child(currentUserId)
-        .child(this.props.currentShopId)
-        .child(this.props.itemCode)
-        .update({
-          location: newLocation,
-        });
-      this.props.onChangeLocation(newLocation);
-      Alert.alert("", "Your item location changed successfully", [
-        { text: "Close", onPress: () => this.closeLocationModal() },
-      ]);
+    // if (newLocation != "") {
+    //   myItemsRef
+    //     .child(currentUserId)
+    //     .child(this.props.currentShopId)
+    //     .child(this.props.itemCode)
+    //     .update({
+    //       location: newLocation,
+    //     });
+    //   this.props.onChangeLocation(newLocation);
+    //   Alert.alert("", "Your item location changed successfully", [
+    //     { text: "Close", onPress: () => this.closeLocationModal() },
+    //   ]);
 
-      this.setState({
-        location: "",
-      });
-    } else {
-      alert("Please input your item location!");
-    }
+    //   this.setState({
+    //     location: "",
+    //   });
+    // } else {
+    //   alert("Please input your item location!");
+    // }
   };
 
   render() {

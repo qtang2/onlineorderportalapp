@@ -24,7 +24,7 @@ export default class MyItems extends Component {
 
   searchFilterFunction = (text) => {
     const newData = this.arrayholder.filter((item) => {
-      const itemData = `${item.itemName.toUpperCase()}`;
+      const itemData = `${item.Name.toUpperCase()}`;
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
     });
@@ -32,13 +32,13 @@ export default class MyItems extends Component {
   };
 
   fetchItemsData(shopId) {
-    console.log("&&&&&&&&&&&&&&&   " + shopId);
+    // console.log("&&&&&&&&&&&&&&&   " + shopId);
     var myItemsURL =
       "https://fngp.com.au/KCWebApi/api/productitems/" + shopId + "/MyProducts";
     fetch(myItemsURL)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
+        console.log(responseJson[0].ImageStr);
         this.setState({
           dataFetched: true,
           myItems: responseJson,
@@ -48,42 +48,6 @@ export default class MyItems extends Component {
       .catch((error) => {
         console.log(error);
       });
-    // var rootRef = firebase.database().ref();
-    // var currentUserId = firebase.auth().currentUser.uid;
-    // var myItemsRef = rootRef.child("myItems");
-    // var itemsRef = rootRef.child("items");
-    // var itemsList = [];
-    // myItemsRef
-    //   .child(currentUserId)
-    //   .child(shopId)
-    //   .on("child_added", (snapshot) => {
-    //     let itemRef = itemsRef.child(snapshot.key);
-    //     // console.log(snapshot.key);
-    //     itemRef.on("value", (snap) => {
-    //       var itemObj = {
-    //         itemCode: snap.key,
-    //         itemName: snap.toJSON().itemName,
-    //         price: snap.toJSON().price,
-    //         itemImage: snap.toJSON().itemImage,
-    //         GST: snap.toJSON().GST,
-    //         category: snap.toJSON().category,
-    //         location:
-    //           snapshot.toJSON().location == null
-    //             ? "Empty"
-    //             : snapshot.toJSON().location,
-    //         CICode:
-    //           snapshot.toJSON().CICode == null
-    //             ? snap.key
-    //             : snapshot.toJSON().CICode,
-    //       };
-    //       itemsList.push(itemObj);
-    //       this.setState({
-    //         dataFetched: true,
-    //         myItems: itemsList,
-    //       });
-    //       this.arrayholder = itemsList;
-    //     });
-    //   });
   }
 
   getCurrentShop = (shopId) => {

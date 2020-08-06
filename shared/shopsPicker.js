@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import { StyleSheet, Picker, View, Text } from "react-native";
 
 import firebase from "../database/firebase";
@@ -14,9 +14,10 @@ export default class ShopsPicker extends Component {
   }
 
   fetchShopsData = () => {
-    fetch(
-      "https://fngp.com.au/KCWebApi/api/users/9e9986bc-3491-45ac-9a3e-93e501b09557/Customers"
-    )
+    var currentUser = "9e9986bc-3491-45ac-9a3e-93e501b09557";
+    var myShopsURL =
+      "https://fngp.com.au/KCWebApi/api/users/" + currentUser + "/Customers";
+    fetch(myShopsURL)
       .then((response) => response.json())
       .then((responseJson) => {
         // console.log(responseJson);
