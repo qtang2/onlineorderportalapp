@@ -38,7 +38,7 @@ export default class MyItems extends Component {
     fetch(myItemsURL)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson[0].ImageStr);
+        // console.log(responseJson[0].ImageStr);
         this.setState({
           dataFetched: true,
           myItems: responseJson,

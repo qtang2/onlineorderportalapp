@@ -15,7 +15,7 @@ import firebase from "../database/firebase";
 export default class Item extends Component {
   constructor(props) {
     super(props);
-    // console.log(props);
+    // console.log(props.itemImage);
     this.state = {
       openCICodeModal: false,
       openLocationModal: false,
@@ -51,30 +51,6 @@ export default class Item extends Component {
     Alert.alert("", "Function in progress", [
       { text: "Close", onPress: () => this.closeCICodeModal() },
     ]);
-    // var rootRef = firebase.database().ref();
-    // var currentUserId = firebase.auth().currentUser.uid;
-    // var myItemsRef = rootRef.child("myItems");
-    // var newCICode = this.state.CICode;
-    // console.log(newCICode);
-    // if (newCICode != "") {
-    //   myItemsRef
-    //     .child(currentUserId)
-    //     .child(this.props.currentShopId)
-    //     .child(this.props.itemCode)
-    //     .update({
-    //       CICode: this.state.CICode,
-    //     });
-    //   this.props.onChangeCICode(newCICode);
-    //   Alert.alert("", "Your C.I.Code changed successfully", [
-    //     { text: "Close", onPress: () => this.closeCICodeModal() },
-    //   ]);
-
-    //   this.setState({
-    //     CICode: "",
-    //   });
-    // } else {
-    //   alert("Please input your CICode!");
-    // }
   };
 
   saveChangedLocation = (e) => {
@@ -83,40 +59,13 @@ export default class Item extends Component {
     Alert.alert("", "Function in progress", [
       { text: "Close", onPress: () => this.closeLocationModal() },
     ]);
-    // var rootRef = firebase.database().ref();
-    // var currentUserId = firebase.auth().currentUser.uid;
-    // var myItemsRef = rootRef.child("myItems");
-    // var newLocation = this.state.location;
-
-    // if (newLocation != "") {
-    //   myItemsRef
-    //     .child(currentUserId)
-    //     .child(this.props.currentShopId)
-    //     .child(this.props.itemCode)
-    //     .update({
-    //       location: newLocation,
-    //     });
-    //   this.props.onChangeLocation(newLocation);
-    //   Alert.alert("", "Your item location changed successfully", [
-    //     { text: "Close", onPress: () => this.closeLocationModal() },
-    //   ]);
-
-    //   this.setState({
-    //     location: "",
-    //   });
-    // } else {
-    //   alert("Please input your item location!");
-    // }
   };
 
   render() {
     return (
       <View style={styles.itemRow}>
         <View style={styles.imageContainer}>
-          <Image
-            source={require("../assets/coffeecup.png")}
-            style={styles.image}
-          />
+          <Image source={{ uri: this.props.itemImage }} style={styles.image} />
           <Text style={styles.itemCodeText}>{this.props.itemCode}</Text>
         </View>
         <View style={styles.itemInfoContainer}>
@@ -289,6 +238,7 @@ const styles = StyleSheet.create({
   },
   itemCodeText: {
     alignSelf: "center",
+    // borderWidth: 1,
   },
   itemInfoContainer: {
     flex: 3,
@@ -298,7 +248,7 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1,
   },
   imageContainer: {
-    flex: 1,
+    flex: 1.5,
     flexDirection: "column",
     // borderWidth: 1,
     // borderBottomWidth: 1,
